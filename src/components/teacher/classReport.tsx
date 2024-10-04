@@ -118,7 +118,10 @@ const ClassReport = () => {
     return <p>Loading..</p>;
   } else {
     return (
-      <div className="space-y-3 mt-12">
+      <div className="space-y-3">
+        <h3 className="mb-20 text-xl font-medium">
+          {data?.[0]?.classRoomName}
+        </h3>
         <table className="pt-9">
           <tr className="text-left whitespace-nowrap">
             <th></th>
