@@ -15,9 +15,9 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //baseUrl: "http://localhost:5000/",
-    baseUrl: "https://edatbackend.azurewebsites.net/",
-    // baseUrl:
-    //   "https://edatbackend-production-frfhc5aagkhbhafk.eastus-01.azurewebsites.net/",
+    // baseUrl: "https://edatbackend.azurewebsites.net/",
+    baseUrl:
+      "https://edatbackend-production-frfhc5aagkhbhafk.eastus-01.azurewebsites.net/",
     prepareHeaders: async (headers) => {
       const token = getToken();
       if (token) {
@@ -134,6 +134,10 @@ export const apiSlice = createApi({
     studentDetails: builder.query({
       query: (id) => `/api/quiz/getQuizResultByUserId/${id}`,
       // providesTags: ["ClassRoom"],
+    }),
+
+    resultsByClassId: builder.query({
+      query: (id) => `/api/quiz/getQuizResultByClassId/${id}`,
     }),
 
     //objectives
@@ -433,6 +437,7 @@ export const {
   useGenerateStudentReportMutation,
   useAddSubjectPriorityMutation,
   useStudentDetailsQuery,
+  useResultsByClassIdQuery,
 
   //objectives
   useCreateObjectiveMutation,

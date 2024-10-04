@@ -40,7 +40,14 @@ export const RegisterSchema = z
     dob: z.date({
       required_error: "A date of birth is required.",
     }),
+    gender: z.string({
+      required_error: "Gender is required.",
+    }),
+    country: z.string({
+      required_error: "Country is required.",
+    }),
     neurodiversity: z.string().optional(),
+
     license: z
       .string()
       .min(2, { message: "Can not be less than 2 characters" })

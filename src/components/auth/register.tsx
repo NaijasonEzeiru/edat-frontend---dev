@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Calendar as CalendarLucide, Eye, EyeOff, Loader } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -35,10 +34,8 @@ import { Calendar } from "../ui/calendar";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
-export function RegisterForm() {
-  const [CreateUser] = useCreateUserMutation();
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+export function RegisterForm({ toggle }: { toggle: () => void }) {
+  const [CreateUser, { isLoading }] = useCreateUserMutation();
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -47,40 +44,35 @@ export function RegisterForm() {
 
   const watchRole = form.watch("role");
 
-  // const {
-  //   register,
-  //   formState: { errors, isLoading },
-  // } = useForm<z.infer<typeof RegisterSchema>>({
-  //   mode: "onBlur",
-  //   resolver: zodResolver(RegisterSchema),
-  // });
-
-  // console.log({ errors });
-
-  // async function onSubmit(body: z.infer<typeof RegisterSchema>) {
-  //   try {
-  //     const response = await CreateUser(body);
-  //     if (response.error) {
-  //     } else {
-  //       alert(response.data.message);
-  //       navigate("/");
-  //     }
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // }
-
-  function onSubmit(data: z.infer<typeof RegisterSchema>) {
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
-    console.log({ data });
+  async function onSubmit(body: z.infer<typeof RegisterSchema>) {
+    try {
+      const response = await CreateUser(body);
+      if (response.error) {
+        toast.error("Registration failed", {
+          description: response?.error?.data?.message,
+        });
+      } else {
+        toast(response.data.message);
+        toggle();
+      }
+    } catch (error) {
+      toast.error("Registration failed", {
+        description: "Something went wrong",
+      });
+      console.log("error", error);
+    }
   }
+
+  // function onSubmit(data: z.infer<typeof RegisterSchema>) {
+  //   toast("You submitted the following values", {
+  //     description: (
+  //       <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+  //         <code className="text-red-400">{JSON.stringify(data, null, 2)}</code>
+  //       </pre>
+  //     ),
+  //   });
+  //   console.log({ data });
+  // }
 
   return (
     <Form {...form}>
@@ -141,6 +133,50 @@ export function RegisterForm() {
                   <SelectItem value="teacher">Teacher</SelectItem>
                   <SelectItem value="student">Student</SelectItem>
                   <SelectItem value="parent">Parent</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="gender"
+          render={({ field }) => (
+            <FormItem className="space-y-0.5">
+              <FormLabel>Gender</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {/* <SelectLabel>Roles</SelectLabel> */}
+                  <SelectItem value="Male">Male</SelectItem>
+                  <SelectItem value="Female">Female</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="country"
+          render={({ field }) => (
+            <FormItem className="space-y-0.5">
+              <FormLabel>Country</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Country" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {/* <SelectLabel>Roles</SelectLabel> */}
+                  <SelectItem value="teacher">Nigeria</SelectItem>
+                  <SelectItem value="student">England</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -227,21 +263,6 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-        {/* {parent && disabilities} */}
-        {/* <select
-            aria-required="true"
-            {...register("license")}
-            aria-invalid={!!errors?.license}
-            aria-errormessage="License key"
-            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-            defaultValue={""}
-          >
-            <option value="" disabled>
-              --Select License key--
-            </option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select> */}
         <FormField
           control={form.control}
           name="license"

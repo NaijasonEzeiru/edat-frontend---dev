@@ -104,7 +104,9 @@ const Header = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{userInfo?.fullName}</DropdownMenuLabel>
+          <DropdownMenuLabel className="capitalize">
+            {userInfo?.fullName}
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>{userInfo.email}</DropdownMenuItem>
           {/* <DropdownMenuItem>Profile</DropdownMenuItem> */}

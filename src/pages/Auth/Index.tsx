@@ -1,62 +1,59 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import One from "../../assets/one.png";
-import { useCreateUserMutation } from "../../features/api/apiSlice";
 import { LoginForm } from "../../components/auth/login";
 import { RegisterForm } from "../../components/auth/register";
-import { Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [show, setShow] = useState(false);
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [role, setRole] = useState();
-  const [license, setLicense] = useState("");
-  const [username, setUserName] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [neurodiversity, setNeurodiversity] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [fullName, setFullName] = useState("");
+  // const [role, setRole] = useState();
+  // const [license, setLicense] = useState("");
+  // const [username, setUserName] = useState("");
+  // const [passwordVisible, setPasswordVisible] = useState(false);
+  // const [neurodiversity, setNeurodiversity] = useState("");
 
   const toggle = () => setShow(!show);
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
+  // const togglePasswordVisibility = () => {
+  //   setPasswordVisible(!passwordVisible);
+  // };
 
-  const [CreateUser, { isSuccess, isLoading: signuploading, isError }] =
-    useCreateUserMutation();
+  // const [CreateUser, { isSuccess, isLoading: signuploading, isError }] =
+  //   useCreateUserMutation();
 
-  const handleCreateAccount = async () => {
-    const payload = {
-      email,
-      fullName,
-      role,
-      license,
-      username,
-      password,
-      neurodiversity,
-    };
-    // validation
-    if (!email) return alert("Email is required");
-    if (!password) return alert("Password is required");
-    if (!fullName) return alert("Full Name is required");
-    if (!role) return alert("Role is required");
-    if (!license) return alert("License is required");
-    if (!username) return alert("Username is required");
+  // const handleCreateAccount = async () => {
+  //   const payload = {
+  //     email,
+  //     fullName,
+  //     role,
+  //     license,
+  //     username,
+  //     password,
+  //     neurodiversity,
+  //   };
+  //   // validation
+  //   if (!email) return alert("Email is required");
+  //   if (!password) return alert("Password is required");
+  //   if (!fullName) return alert("Full Name is required");
+  //   if (!role) return alert("Role is required");
+  //   if (!license) return alert("License is required");
+  //   if (!username) return alert("Username is required");
 
-    try {
-      const response = await CreateUser(payload);
-      if (response.error) {
-        alert(response.error.data.message);
-      } else {
-        alert(response.data.message);
-        window.location.href = "/";
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  //   try {
+  //     const response = await CreateUser(payload);
+  //     if (response.error) {
+  //       alert(response.error.data.message);
+  //     } else {
+  //       alert(response.data.message);
+  //       window.location.href = "/";
+  //     }
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // };
 
   return (
     // <div className="min-w-screen min-h-screen bg-black flex flex-col lg:flex-row justify-between">
@@ -266,7 +263,7 @@ const Index = () => {
                 Enter your information to create an account
               </p>
             </div>
-            <RegisterForm />
+            <RegisterForm toggle={toggle} />
             <div className="text-center text-sm">
               Already have an account?{" "}
               <Button variant="link" onClick={toggle} className="px-0">
@@ -291,14 +288,6 @@ const Index = () => {
         </h6>
       </div>
     </div>
-
-    // <div className="flex items-center flex-col bg-primary text-white">
-    //   <p className="text-4xl">QUIZ</p>
-    //   <Brain className="size-32 opacity-70" />
-    //   <Button className="text-xl px-14 rounded-xl bg-white text-primary">
-    //     Start
-    //   </Button>
-    // </div>
   );
 };
 

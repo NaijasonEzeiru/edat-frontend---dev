@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "sonner";
 import Index from "./pages/Auth/Index";
 import { TeachersLayout } from "./components/Layouts/Teacher";
 import { StudentLayout } from "./components/Layouts/Student";
@@ -39,6 +39,7 @@ import ParentReport from "./pages/Parent/Report";
 import ChildResult from "./pages/Parent/Result";
 import Strengths from "./pages/Parent/Strengths";
 import StudentsReport from "./pages/Teacher/Report";
+import ClassReport from "./components/teacher/classReport";
 // import store from "./app/store";
 
 const App = () => {
@@ -94,6 +95,7 @@ const App = () => {
             element={<CreateReport />}
           />
           <Route path="/teacher/report" element={<StudentsReport />} />
+          <Route path="/teacher/report/:classId" element={<ClassReport />} />
           <Route path="/teacher/class/:userId" element={<StudentDetails />} />
           {/* <Route path="/dashboard/class-room" element={<ClassRoom />} /> */}
         </Route>
@@ -173,7 +175,7 @@ const App = () => {
           />
         )}
       </Routes>
-      <Toaster />
+      <Toaster richColors theme="light" toastOptions={{}} />
     </div>
     // </Provider>
   );
