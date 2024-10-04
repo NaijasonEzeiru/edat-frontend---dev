@@ -14,10 +14,12 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Header from "../others/Header";
 import { useSelector } from "react-redux";
 import { useGetAccountByIdQuery } from "../../features/api/apiSlice";
+import { useState } from "react";
 
 export function StudentLayout() {
   const userInfo = useSelector((state) => state.user.userInfo);
   const { data } = useGetAccountByIdQuery(userInfo?.accountId);
+  const [openNav, setOpenNav] = useState(false);
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -147,7 +149,7 @@ export function StudentLayout() {
       </div>
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-          <Sheet>
+          <Sheet open={openNav} onOpenChange={setOpenNav}>
             <SheetTrigger asChild>
               <Button
                 variant="outline"
@@ -192,6 +194,7 @@ export function StudentLayout() {
                         : "text-primary-foreground hover:bg-blue-500"
                     }`
                   }
+                  onClick={() => setOpenNav(false)}
                 >
                   <StickyNote className="h-5 w-5" />
                   Result
@@ -205,6 +208,7 @@ export function StudentLayout() {
                         : "text-primary-foreground hover:bg-blue-500"
                     }`
                   }
+                  onClick={() => setOpenNav(false)}
                 >
                   <Users className="h-5 w-5" />
                   Classrooms
@@ -218,6 +222,7 @@ export function StudentLayout() {
                         : "text-primary-foreground hover:bg-blue-500"
                     }`
                   }
+                  onClick={() => setOpenNav(false)}
                 >
                   <User className="h-5 w-5" />
                   Profile
@@ -231,6 +236,7 @@ export function StudentLayout() {
                         : "text-primary-foreground hover:bg-blue-500"
                     }`
                   }
+                  onClick={() => setOpenNav(false)}
                 >
                   <ListPlus className="h-5 w-5" />
                   Recommendation
@@ -244,6 +250,7 @@ export function StudentLayout() {
                         : "text-primary-foreground hover:bg-blue-500"
                     }`
                   }
+                  onClick={() => setOpenNav(false)}
                 >
                   <LineChart className="h-5 w-5" />
                   Report
@@ -256,7 +263,8 @@ export function StudentLayout() {
                         ? "bg-muted text-foreground hover:bg-slate-200"
                         : "text-primary-foreground hover:bg-blue-500"
                     }`
-                  }
+                  } 
+                  onClick={() => setOpenNav(false)}
                 >
                   <Settings className="h-5 w-5" />
                   Settings

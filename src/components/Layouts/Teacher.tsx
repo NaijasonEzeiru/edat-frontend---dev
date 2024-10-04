@@ -15,9 +15,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Header from "../others/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { apiSlice, useGetAccountByIdQuery } from "@/features/api/apiSlice";
+import { useState } from "react";
 
 export function TeachersLayout() {
   const userInfo = useSelector((state) => state.user.userInfo);
+  const [openNav, setOpenNav] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data } = useGetAccountByIdQuery(userInfo.accountId);
@@ -109,7 +111,7 @@ export function TeachersLayout() {
       </div>
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-          <Sheet>
+          <Sheet open={openNav} onOpenChange={setOpenNav}>
             <SheetTrigger asChild>
               <Button
                 variant="outline"
@@ -140,6 +142,7 @@ export function TeachersLayout() {
                         : "text-primary-foreground hover:bg-blue-500"
                     }`
                   }
+                  onClick={() => setOpenNav(false)}
                 >
                   <Users className="h-5 w-5" />
                   Classroom
@@ -153,6 +156,7 @@ export function TeachersLayout() {
                         : "text-primary-foreground hover:bg-blue-500"
                     }`
                   }
+                  onClick={() => setOpenNav(false)}
                 >
                   <User className="h-5 w-5" />
                   Profile
@@ -171,8 +175,8 @@ export function TeachersLayout() {
                   <Settings className="h-5 w-5" />
                   Update
                 </NavLink> */}
-                {/* <NavLink
-                  to="/teacher/under-development"
+                <NavLink
+                  to="/teacher/report"
                   className={({ isActive }) =>
                     `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 ${
                       isActive
@@ -180,10 +184,11 @@ export function TeachersLayout() {
                         : "text-primary-foreground hover:bg-blue-500"
                     }`
                   }
+                  onClick={() => setOpenNav(false)}
                 >
-                  <LineChart className="h-5 w-5" />
+                  <LineChart className="h-4 w-4" />
                   Report
-                </NavLink> */}
+                </NavLink>
               </nav>
               <div className="mt-auto px-3">
                 <p>EDAT</p>
