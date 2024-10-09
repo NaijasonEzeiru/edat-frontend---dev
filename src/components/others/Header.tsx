@@ -28,9 +28,7 @@ const Header = () => {
   const [markAsRead] = useMarkNotificationAsReadMutation();
   console.log({ data });
 
-  const unreadNotifications = data?.filter(
-    (val) => val.status == "unread" && val?.data?.classId
-  );
+  const unreadNotifications = data?.filter((val) => val.status == "unread");
 
   return (
     <>

@@ -260,105 +260,85 @@ const Index = (props) => {
 
   const QuizContent = () => {
     return (
-      <div className="md:border-slate-300 md:border-[1px] rounded-lg md:p-6 space-y-6">
+      <div className="bg-background rounded-lg md:px-24 p-3 md:pt-14 md:pb-20 space-y-6">
         <h3 className="text-2xl font-medium capitalize">{data?.objective}</h3>
-        <div className="flex items-center">
-          <hr className="w-8 h-0.5 bg-primary hidden md:block" />
-          <div className="border-x-2 border-primary rounded-full p-2 md:p-3 w-full">
-            <div className="text-lg text-center border-2 border-primary rounded-full font-semibold mb-2 p-3 first-letter:capitalize">
-              {currentQuiz?.question}
-            </div>
-          </div>
-          <hr className="w-8 h-0.5 bg-primary hidden md:block" />
-        </div>
+        <h4 className="rounded bg-[#EBF0FC] px-4 py-5 font-medium first-letter:uppercase">
+          {currentQuiz?.question}
+        </h4>
         <div>
-          <div className="flex flex-col md:gap-2 mb-5 md:mb-0">
-            <span className="flex items-center flex-col md:flex-row">
-              <hr className="bg-primary w-10 h-0.5 hidden md:block" />
-              <div className="border-x-2 border-primary p-1.5 rounded-full w-full">
-                <label
-                  className={`w-full py-4 rounded-full text-foreground hover:border-lime-700 ${
-                    selectedAnswer === "a" && "bg-primary/20"
-                  } border-primary border-2 text-start items-center flex gap-3 cursor-pointer`}
-                  onClick={() => handleAnswerSelect("a")}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedAnswer === "a"}
-                    onChange={() => handleAnswerSelect("a")}
-                    className="appearance-none"
-                  />
-                  <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
-                    A
-                  </span>{" "}
-                  {currentQuiz?.optionA}
-                </label>
-              </div>
-              <hr className="bg-primary w-10 h-0.5 hidden md:block" />
-              <div className="border-x-2 border-primary p-1.5 rounded-full w-full">
-                <label
-                  className={`w-full py-4 rounded-full text-foreground hover:border-lime-700 ${
-                    selectedAnswer === "b" && "bg-primary/20"
-                  } border-primary border-2 text-start items-center flex gap-3 cursor-pointer`}
-                  onClick={() => handleAnswerSelect("b")}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedAnswer === "b"}
-                    onChange={() => handleAnswerSelect("b")}
-                    className="appearance-none"
-                  />
-                  <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
-                    B
-                  </span>{" "}
-                  {currentQuiz?.optionB}
-                </label>
-              </div>
-              <hr className="bg-primary w-10 h-0.5 hidden md:block" />
+          <div className="flex flex-col gap-3 mb-5 md:mb-0">
+            <span className="flex items-center flex-col md:flex-row gap-3">
+              <label
+                className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
+                  selectedAnswer === "a" && "bg-primary/20"
+                } border-primary text-start items-center flex gap-3 cursor-pointer`}
+                onClick={() => handleAnswerSelect("a")}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedAnswer === "a"}
+                  onChange={() => handleAnswerSelect("a")}
+                  className="appearance-none"
+                />
+                <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
+                  A
+                </span>{" "}
+                {currentQuiz?.optionA}
+              </label>
+              <label
+                className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
+                  selectedAnswer === "b" && "bg-primary/20"
+                } border-primary text-start items-center flex gap-3 cursor-pointer`}
+                onClick={() => handleAnswerSelect("b")}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedAnswer === "b"}
+                  onChange={() => handleAnswerSelect("b")}
+                  className="appearance-none"
+                />
+                <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
+                  B
+                </span>{" "}
+                {currentQuiz?.optionB}
+              </label>
             </span>
 
-            <span className="flex items-center flex-col md:flex-row">
-              <hr className="bg-primary w-10 h-0.5 hidden md:block" />
-              <div className="border-x-2 border-primary p-1.5 rounded-full w-full">
-                <label
-                  className={`w-full py-4 rounded-full text-foreground hover:border-lime-700 ${
-                    selectedAnswer === "c" && "bg-primary/20"
-                  } border-primary border-2 text-start items-center flex gap-3 cursor-pointer`}
-                  onClick={() => handleAnswerSelect("c")}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedAnswer === "c"}
-                    onChange={() => handleAnswerSelect("c")}
-                    className="appearance-none"
-                  />
-                  <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
-                    C
-                  </span>{" "}
-                  {currentQuiz?.optionC}
-                </label>
-              </div>
-              <hr className="bg-primary w-10 h-0.5 hidden md:block" />
-              <div className="border-x-2 border-primary p-1.5 rounded-full w-full">
-                <label
-                  className={`w-full py-4 rounded-full text-foreground hover:border-lime-700 ${
-                    selectedAnswer === "d" && "bg-primary/20"
-                  } border-primary border-2 text-start items-center flex gap-3 cursor-pointer`}
-                  onClick={() => handleAnswerSelect("d")}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedAnswer === "d"}
-                    onChange={() => handleAnswerSelect("d")}
-                    className="appearance-none"
-                  />
-                  <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
-                    D
-                  </span>{" "}
-                  {currentQuiz?.optionD}
-                </label>
-              </div>
-              <hr className="bg-primary w-10 h-0.5 hidden md:block" />
+            <span className="flex items-center flex-col md:flex-row gap-3">
+              <label
+                className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
+                  selectedAnswer === "c" && "bg-primary/20"
+                } border-primary text-start items-center flex gap-3 cursor-pointer`}
+                onClick={() => handleAnswerSelect("c")}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedAnswer === "c"}
+                  onChange={() => handleAnswerSelect("c")}
+                  className="appearance-none"
+                />
+                <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
+                  C
+                </span>{" "}
+                {currentQuiz?.optionC}
+              </label>
+              <label
+                className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
+                  selectedAnswer === "d" && "bg-primary/20"
+                } border-primary text-start items-center flex gap-3 cursor-pointer`}
+                onClick={() => handleAnswerSelect("d")}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedAnswer === "d"}
+                  onChange={() => handleAnswerSelect("d")}
+                  className="appearance-none"
+                />
+                <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
+                  D
+                </span>{" "}
+                {currentQuiz?.optionD}
+              </label>
             </span>
           </div>
         </div>
@@ -373,7 +353,7 @@ const Index = (props) => {
             Next question
           </button>
         </div> */}
-        <div style={{ position: "relative", marginBlock: "10px" }}>
+        <div className="relative md:pt-9">
           {/* {currentQuestion > 0 && ( */}
           <Button
             variant="outline"
@@ -477,12 +457,14 @@ const Index = (props) => {
 
       const newObject = {
         questions: failedResults,
-        student_info: {
+        studentInfo: {
           age: userInfo?.age,
-          learning_objectives: `${data?.category}: ${scorePercentage}`,
-          disability: userInfo?.neurodiversity,
+          learningObjectives: `${data?.category}: ${scorePercentage}`,
+          neurodiversity: userInfo?.neurodiversity,
+          gender: userInfo?.gender,
+          userId: userInfo?._id,
         },
-        student_name: userInfo?.fullName,
+        studentName: userInfo?.fullName,
       };
 
       const response = await analyzeResult(newObject);

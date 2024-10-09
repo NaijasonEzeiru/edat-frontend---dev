@@ -67,11 +67,9 @@ const getAvg = (
   }[]
 ) =>
   array
-    .map((objective) => objective.score_percent)
-    .filter((val) => val != -5)
-    .reduce((sum, currentValue) => sum + currentValue, 0) /
-  array.map((objective) => objective.score_percent).filter((val) => val != -5)
-    .length;
+    .filter((val) => val.score_percent != -5)
+    .reduce((sum, currentValue) => sum + currentValue.score_percent, 0) /
+  array.filter((val) => val.score_percent != -5).length;
 
 const ClassReport = () => {
   const { classId } = useParams();

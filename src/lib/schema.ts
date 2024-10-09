@@ -76,3 +76,15 @@ export const AITaskSchema = z.object({
   user_country: z.string().min(1, { message: "Can not be empty" }),
   // total_marks: z.coerce.number().min(1, { message: "Can not be less than 1" }),
 });
+
+export const CreateClassroomSchema = z.object({
+  yearGroup: z.string({
+    required_error: "Please select a year group.",
+  }),
+  aim: z.string({
+    required_error: "Please select an arm.",
+  }),
+  subject: z.string({
+    required_error: "Please select a subject.",
+  }),
+});

@@ -278,7 +278,7 @@ export function StudentLayout() {
           </Sheet>
           <Header />
         </header>
-        <main className="flex-1 p-4 lg:gap-6 lg:p-6 overflow-y-auto">
+        <main className="flex-1 p-4 lg:gap-6 lg:p-6 overflow-y-auto bg-[#EBF0FC]">
           <Outlet />
         </main>
       </div>

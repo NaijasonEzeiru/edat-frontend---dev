@@ -14,7 +14,7 @@ const getToken = () => {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    //baseUrl: "http://localhost:5000/",
+    // baseUrl: "http://localhost:5000/",
     baseUrl: "https://edatbackend.azurewebsites.net/",
     // baseUrl:
     //   "https://edatbackend-production-frfhc5aagkhbhafk.eastus-01.azurewebsites.net/",
@@ -38,6 +38,9 @@ export const apiSlice = createApi({
     "User",
     "Notification",
     "Chat",
+    "YearGroup",
+    "Arm",
+    "Subject",
   ],
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -408,6 +411,91 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Chat"],
     }),
+
+    // org admin
+    createYearGroup: builder.mutation({
+      query: (payload) => ({
+        url: "/api/classroom/createNewYearGroup",
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["YearGroup"],
+    }),
+    createArm: builder.mutation({
+      query: (payload) => ({
+        url: "/api/classroom/createAim",
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Arm"],
+    }),
+    createSubject: builder.mutation({
+      query: (payload) => ({
+        url: "/api/classroom/createSubject",
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Subject"],
+    }),
+    updateYearGroupByID: builder.mutation({
+      query: ({ payload, id }) => ({
+        url: `/api/classroom/updateYearGroupByID/${id}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["YearGroup"],
+    }),
+    updateSubjectByID: builder.mutation({
+      query: ({ payload, id }) => ({
+        url: `/api/classroom/updateSubjectByID/${id}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["Subject"],
+    }),
+    updateArmByID: builder.mutation({
+      query: ({ payload, id }) => ({
+        url: `/api/classroom/updateAimByID/${id}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["Arm"],
+    }),
+    deleteYearGroupByID: builder.mutation({
+      query: (id) => ({
+        url: `/api/classroom/deleteYearGroupByID/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["YearGroup"],
+    }),
+    deleteSubjectByID: builder.mutation({
+      query: (id) => ({
+        url: `/api/classroom/deleteSubjectByID/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Subject"],
+    }),
+    deleteAimByID: builder.mutation({
+      query: (id) => ({
+        url: `/api/classroom/deleteAimByID/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Arm"],
+    }),
+    getAllYearGroupsByAccountID: builder.query({
+      query: (accountId) =>
+        `/api/classroom/getAllYearGroupsByAccountID/${accountId}`,
+      providesTags: ["YearGroup"],
+    }),
+    getAllSubjectsByAccountID: builder.query({
+      query: (accountId) =>
+        `/api/classroom/getAllSubjectsByAccountID/${accountId}`,
+      providesTags: ["Subject"],
+    }),
+    getAllArmsByAccountID: builder.query({
+      query: (accountId) => `/api/classroom/getAllAimsByAccountID/${accountId}`,
+      providesTags: ["Arm"],
+    }),
   }),
 });
 
@@ -438,6 +526,18 @@ export const {
   useAddSubjectPriorityMutation,
   useStudentDetailsQuery,
   useResultsByClassIdQuery,
+  useCreateYearGroupMutation,
+  useUpdateYearGroupByIDMutation,
+  useDeleteYearGroupByIDMutation,
+  useCreateArmMutation,
+  useGetAllArmsByAccountIDQuery,
+  useDeleteAimByIDMutation,
+  useUpdateArmByIDMutation,
+  useCreateSubjectMutation,
+  useDeleteSubjectByIDMutation,
+  useGetAllSubjectsByAccountIDQuery,
+  useGetAllYearGroupsByAccountIDQuery,
+  useUpdateSubjectByIDMutation,
 
   //objectives
   useCreateObjectiveMutation,

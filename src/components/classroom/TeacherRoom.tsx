@@ -2,17 +2,10 @@ import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import {
-  useFindAllQuizQuery,
   useFindAllObjectivesQuery,
   useCreateQuizMutation,
 } from "../../features/api/apiSlice";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -25,15 +18,9 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { LinkIcon } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -42,6 +29,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
+import { Loader } from "lucide-react";
+import { toast } from "sonner";
 
 const TeacherRoom = () => {
   let { state } = useLocation();
@@ -111,9 +100,11 @@ const TeacherRoom = () => {
     console.log("heere", payload);
     if (response.data.status === true) {
       dialogRef.current.close();
-      alert(response.data.message);
+      toast(response.data.message);
     } else {
-      alert(response.data.message);
+      toast.error("Error creating quiz", {
+        description: response.data.message,
+      });
     }
   };
 
@@ -163,7 +154,7 @@ const TeacherRoom = () => {
                     {filteredObjectives.map((objective, index) => (
                       <li
                         key={index}
-                        className="p-4 cursor-pointer hover:bg-gray-100"
+                        className="p-4 cursor-pointer first-letter:capitalize hover:bg-gray-100"
                         onClick={() => handleObjectiveSelect(objective)}
                       >
                         {objective?.objective}
@@ -201,12 +192,18 @@ const TeacherRoom = () => {
               ></textarea>
             </Label>
           </div>
-
-          <div className="mt-4">
-            <button onClick={handleSubmit} className="btn min-w-full">
-              Create Quiz
-            </button>
-          </div>
+          <Button
+            onClick={handleSubmit}
+            className="mt-4 w-full"
+            disabled={isLoadingQuiz}
+          >
+            {isLoadingQuiz && (
+              <span className="mr-2 animate-spin">
+                <Loader />
+              </span>
+            )}
+            Create Quiz
+          </Button>
         </div>
       </dialog>
 

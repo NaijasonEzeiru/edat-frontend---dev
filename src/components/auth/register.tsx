@@ -37,6 +37,7 @@ import { useState } from "react";
 export function RegisterForm({ toggle }: { toggle: () => void }) {
   const [CreateUser, { isLoading }] = useCreateUserMutation();
   const [showPassword, setShowPassword] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -62,17 +63,6 @@ export function RegisterForm({ toggle }: { toggle: () => void }) {
       console.log("error", error);
     }
   }
-
-  // function onSubmit(data: z.infer<typeof RegisterSchema>) {
-  //   toast("You submitted the following values", {
-  //     description: (
-  //       <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-  //         <code className="text-red-400">{JSON.stringify(data, null, 2)}</code>
-  //       </pre>
-  //     ),
-  //   });
-  //   console.log({ data });
-  // }
 
   return (
     <Form {...form}>
@@ -175,8 +165,8 @@ export function RegisterForm({ toggle }: { toggle: () => void }) {
                 </FormControl>
                 <SelectContent>
                   {/* <SelectLabel>Roles</SelectLabel> */}
-                  <SelectItem value="teacher">Nigeria</SelectItem>
-                  <SelectItem value="student">England</SelectItem>
+                  <SelectItem value="Nigeria">Nigeria</SelectItem>
+                  <SelectItem value="England">England</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -225,7 +215,7 @@ export function RegisterForm({ toggle }: { toggle: () => void }) {
           render={({ field }) => (
             <FormItem className="flex flex-col space-y-0.5">
               <FormLabel>Date of birth</FormLabel>
-              <Popover>
+              <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -248,10 +238,17 @@ export function RegisterForm({ toggle }: { toggle: () => void }) {
                   <Calendar
                     mode="single"
                     selected={field.value}
-                    onSelect={field.onChange}
+                    onSelect={(e) => {
+                      field.onChange(e);
+                      setIsCalendarOpen(false);
+                    }}
                     disabled={(date) =>
                       date > new Date() || date < new Date("1940-01-01")
                     }
+                    defaultMonth={new Date(2024, 6)}
+                    captionLayout="dropdown-buttons"
+                    fromYear={1980}
+                    toYear={2025}
                     initialFocus
                   />
                 </PopoverContent>
