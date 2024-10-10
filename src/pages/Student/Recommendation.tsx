@@ -471,7 +471,7 @@ const Recommedation = () => {
 
                   {currentStepPage <= 4 && (
                     <div className="border border-foreground/20 rounded p-4 grow flex flex-col justify-between min-w-[22vw]">
-                      <div className="mt-4">
+                      <div className="my-auto">
                         {recData?.questions
                           .slice(
                             currentQuestionPage,

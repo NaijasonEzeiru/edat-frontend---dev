@@ -70,7 +70,7 @@ const Header = () => {
                       userId: userInfo._id,
                       notificationId: val.id,
                     });
-                    navigate(`/student/classrooms/${val?.data?.classId}`);
+                    navigate(`/student/classrooms/${val?.classId}`);
                   }}
                 >
                   <span className="size-8 rounded-full border border-border flex items-center justify-center">

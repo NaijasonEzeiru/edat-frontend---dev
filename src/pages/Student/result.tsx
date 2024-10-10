@@ -20,7 +20,7 @@ export const Result = () => {
 
   return (
     <main>
-      <div className="flex items-center justify-between px-4 py-5 rounded-lg bg-background">
+      {/* <div className="flex items-center justify-between px-4 py-5 rounded-lg bg-background">
         <p className="text-xl font-semibold">Select a subject</p>{" "}
         <Select>
           <SelectTrigger className="w-36 border-foreground/50">
@@ -29,15 +29,11 @@ export const Result = () => {
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Subjects</SelectLabel>
-              {/* {myClasses?.classes?.map((i) => (
-                <SelectItem value={i._id} key={i._id}>
-                  {i?.classTitle}
-                </SelectItem>
-              ))} */}
+              
             </SelectGroup>
           </SelectContent>
         </Select>
-      </div>
+      </div> */}
       <div className="w-[calc(100vw-32px)] md:w-[calc(100vw-252px)] lg:w-[calc(100vw-328px)] overflow-x-auto">
         <DataTable
           columns={resultColumns}
