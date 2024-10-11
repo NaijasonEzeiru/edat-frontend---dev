@@ -187,7 +187,6 @@ function ChatBot({ userInfo, rec, onClose }: ChatBotProps) {
   };
 
   const messageStyle = `
-    p { margin-bottom: 0.75em; }
     ol { margin-top: 0.5em; margin-bottom: 0.75em; padding-left: 1.5em; }
     li { margin-bottom: 0.5em; }
     p + ol { margin-top: -0.25em; }

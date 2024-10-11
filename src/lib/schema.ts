@@ -63,6 +63,52 @@ export const RegisterSchema = z
     }
   });
 
+export const EditPasswordSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .min(8, { message: "Can not be less than 8 characters" })
+      .max(20, { message: "Can not be more than 20 characters" }),
+    password: z
+      .string()
+      .min(8, { message: "Can not be less than 8 characters" })
+      .max(20, { message: "Can not be more than 20 characters" }),
+    confirmPassword: z
+      .string()
+      .min(8, { message: "Can not be less than 8 characters" })
+      .max(20, { message: "Can not be more than 20 characters" }),
+  })
+  .superRefine(({ confirmPassword, password }, ctx) => {
+    if (confirmPassword !== password) {
+      ctx.addIssue({
+        code: "custom",
+        message: "The passwords do not match",
+        path: ["confirmPassword"],
+      });
+    }
+  });
+
+export const EditProfileSchema = z.object({
+  fullName: z
+    .string()
+    .min(4, { message: "Can not be less than 4 characters" })
+    .max(40, { message: "Can not be more than 40 characters" }),
+  email: z
+    .string()
+    .email({ message: "Please input a valid email address" })
+    .max(30, { message: "Must contain at most 30 characters" }),
+  dob: z.date({
+    required_error: "A date of birth is required.",
+  }),
+  gender: z.string({
+    required_error: "Gender is required.",
+  }),
+  country: z.string({
+    required_error: "Country is required.",
+  }),
+  neurodiversity: z.string().optional(),
+});
+
 export const AITaskSchema = z.object({
   // learning_outcomes: z.string().min(1, { message: "Can not be empty" }).array(),
   estimated_time: z.coerce
@@ -73,7 +119,6 @@ export const AITaskSchema = z.object({
     .number()
     .min(1, { message: "Can not be less than 1" }),
   exam_board: z.string().min(1, { message: "Can not be empty" }),
-  user_country: z.string().min(1, { message: "Can not be empty" }),
   // total_marks: z.coerce.number().min(1, { message: "Can not be less than 1" }),
 });
 

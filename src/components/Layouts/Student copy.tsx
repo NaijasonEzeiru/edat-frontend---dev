@@ -8,7 +8,6 @@ import {
   StickyNote,
   Users,
   LineChart,
-  BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -67,8 +66,8 @@ export function StudentLayout() {
           id: 5,
           name: "Study Plan",
           href: `/recommendation`,
-          icon: <BookOpen className="h-4 w-4" />,
-          iconMobile: <BookOpen className="h-5 w-5" />,
+          icon: <ListPlus className="h-4 w-4" />,
+          iconMobile: <ListPlus className="h-5 w-5" />,
         },
         {
           id: 6,
@@ -93,10 +92,9 @@ export function StudentLayout() {
             </span>
           </div>
           <div className="flex-1 mt-4">
-            <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
+            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {menus.map((menu) => (
                 <NavLink
-                  end={menu.id == 1}
                   key={menu.id}
                   to={menu.href}
                   className={({ isActive }) =>
@@ -113,11 +111,12 @@ export function StudentLayout() {
               ))}
             </nav>
           </div>
-          <span className="gap-1 mt-auto text-xs py-7 px-5 lg:px-7 items-center font-light flex flex-col w-fit">
-            <img alt="Edatech logo" src="/edat-logo-white-small.png" />
-            <p className="font-bold">POWERED BY EDATECH</p>
-            <p>All Rights Reserved ©2024</p>
-          </span>
+          <div className="mt-auto py-7 text-sm px-5 lg:px-7">
+            <span className="flex gap-2 text-xs items-center">
+              <img alt="" src="/edat_logo.png" className="w-12" />
+              <p>All Rights Reserved ©2024</p>
+            </span>
+          </div>
         </div>
       </div>
       <div className="flex flex-col">
@@ -144,12 +143,11 @@ export function StudentLayout() {
                   <span className="sr-only">Institution's logo</span>
                   <span>{data?.accountName}</span>
                 </span>
-                {menus.map((menu) => (
+                {menus.map((menu, index) => (
                   <NavLink
-                    end={menu.id == 1}
+                    end={index == 0}
                     key={menu.id}
                     to={menu.href}
-                    onClick={() => setOpenNav(false)}
                     className={({ isActive }) =>
                       `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 mt-4 ${
                         isActive
@@ -159,7 +157,7 @@ export function StudentLayout() {
                     }
                   >
                     {menu.iconMobile}
-                    {menu.name}
+                    {menu.href}
                   </NavLink>
                 ))}
               </nav>

@@ -34,9 +34,8 @@ import { toast } from "sonner";
 
 const TeacherRoom = () => {
   let { state } = useLocation();
-  console.log("this is state", state?.data);
-
   const userInfo = useSelector((state) => state.user.userInfo);
+  console.log({ userInfo });
   const { data: allObjectives, isLoading: isLoadingObjectives } =
     useFindAllObjectivesQuery();
   const [createQuiz, { isLoading: isLoadingQuiz }] = useCreateQuizMutation();
@@ -324,6 +323,7 @@ const TeacherRoom = () => {
           handleSearchChange={handleSearchChange}
           search={search}
           classId={state?.data?._id}
+          country={userInfo?.country}
           openDialog={setOpenQuizDialog}
         />
       </Dialog>
