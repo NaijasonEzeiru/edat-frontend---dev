@@ -2,7 +2,7 @@ import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import Index from "./pages/Auth/Index";
 import { TeachersLayout } from "./components/Layouts/Teacher";
-import { StudentLayout } from "./components/Layouts/Student";
+import { Layout } from "./components/Layouts/Layout";
 import { SuperAdminLayout } from "./components/Layouts/SuperAdmin";
 import SuperAdminDashboard from "./pages/SuperAdmin/SuperAdmin";
 import { OrgLayout } from "./components/Layouts/Org";
@@ -73,7 +73,7 @@ const App = () => {
       <div className="overflow-x-hidden">
         <Routes>
           {/* Teachers layout */}
-          <Route element={<TeachersLayout />}>
+          <Route element={<Layout />}>
             <Route path="/teacher/profile" element={<Profile />} />
             <Route path="/teacher" element={<TeachersClassroom />} />
             <Route path="/teacher/class" element={<TeacherRoom />} />
@@ -107,7 +107,7 @@ const App = () => {
           </Route>
 
           {/* Org layout */}
-          <Route element={<OrgLayout />}>
+          <Route element={<Layout />}>
             <Route path="/org-admin" element={<OrgDashboard />} />
             <Route path="/org-admin/profile" element={<Profile />} />
             <Route path="/org-admin/org-settings" element={<Classrooms />} />
@@ -117,7 +117,7 @@ const App = () => {
           </Route>
 
           {/* Student layout */}
-          <Route element={<StudentLayout />}>
+          <Route element={<Layout />}>
             <Route path="/student" element={<StudentDash />} />
             <Route path="/profile" element={<StudentProfile />} />
             <Route path="/student/classrooms" element={<StudentClassrooms />} />

@@ -56,7 +56,7 @@ const Index = () => {
             Edit profile
           </Button>
         </div>
-        {/* <div className="font-medium text-sm px-8 mt-9">
+        <div className="font-medium text-sm px-8 mt-9">
           <h3 className="text-2xl text-[#CACED8]">Bio data</h3>
           {userInfo?.bio && (
             <div className="mt-7 font-light border-primary/10 rounded border-[20px] p-3">
@@ -79,13 +79,13 @@ const Index = () => {
           <Button className="w-full mt-7" onClick={handleUpdate}>
             {userInfo?.bio ? "Update Bio" : "Submit"}
           </Button>
-        </div> */}
-        <div className="font-medium text-sm px-8 mt-9 w-full">
+        </div>
+        {/* <div className="font-medium text-sm px-8 mt-9 w-full">
           <h3 className="text-2xl text-[#CACED8]">Edit Profile</h3>
           <EditProfileForm />
           <h3 className="text-2xl text-[#CACED8] mt-9 mb-4">Edit Password</h3>
           <EditPasswordForm />
-        </div>
+        </div> */}
       </div>
     </div>
   );

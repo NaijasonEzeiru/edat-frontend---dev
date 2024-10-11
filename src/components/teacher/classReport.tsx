@@ -126,7 +126,7 @@ const ClassReport = () => {
     return <p>Loading..</p>;
   } else {
     return (
-      <div>
+      <div className="overflow-hidden">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -146,7 +146,7 @@ const ClassReport = () => {
         {results.length < 1 ? (
           <p>This class has no result</p>
         ) : (
-          <table className="pt-9">
+          <table className="pt-9 overflow-x-auto">
             <tr className="text-left whitespace-nowrap">
               <th></th>
               <th className="capitalize max-w-8">

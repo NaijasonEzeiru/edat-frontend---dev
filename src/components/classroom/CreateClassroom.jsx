@@ -63,10 +63,9 @@ const Index = () => {
     <>
       {/* create class modal */}
 
-      <dialog id="my_modal_3" className="modal" ref={dialogRef}>
+      {/* <dialog id="my_modal_3" className="modal" ref={dialogRef}>
         <div className="modal-box">
           <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
             </button>
@@ -120,16 +119,16 @@ const Index = () => {
             </button>
           </div>
         </div>
-      </dialog>
+      </dialog> */}
 
-      <div className="flex flex-row justify-end mb-5">
+      {/* <div className="flex flex-row justify-end mb-5">
         <button
           onClick={() => document.getElementById("my_modal_3").showModal()}
           className="btn "
         >
           Create Classroom
         </button>
-      </div>
+      </div> */}
       {classRooms?.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table">

@@ -1,34 +1,19 @@
-import { useState, useRef } from "react";
-import {
-  useGetAllClassRoomByAccountIdQuery,
-  useJoinClassMutation,
-  useFindMyClassesTeacherQuery,
-} from "../../features/api/apiSlice";
+import { useFindMyClassesTeacherQuery } from "../../features/api/apiSlice";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users } from "lucide-react";
 import { JoinClassroom } from "./joinClassroom";
 
 const TeachersClassroom = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
-  const { data: classes } = useGetAllClassRoomByAccountIdQuery(
-    userInfo?.accountId
-  );
   const { data: myClasses } = useFindMyClassesTeacherQuery(userInfo._id);
-  const [joinClass, { isLoading }] = useJoinClassMutation();
-  const dialogRef = useRef(null);
-
-  console.log("my classes", myClasses);
-
-  const [classRoom, setClassRoom] = useState();
 
   return (
     <>
       <JoinClassroom userInfo={userInfo} />
 
-      <div className="min-h-screen w-full flex flex-1 flex-col gap-4 md:gap-8">
+      <div className="min-h-screen w-full flex flex-1 flex-col gap-4 md:gap-8 mt-7">
         <Card x-chunk="dashboard-01-chunk-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-lg">Classrooms</CardTitle>
