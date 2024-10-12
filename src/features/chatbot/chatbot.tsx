@@ -24,20 +24,21 @@ function ChatBot({ userInfo, rec, onClose }: ChatBotProps) {
   const [chat, { isLoading }] = useChatMutation();
   console.log("this is user info", userInfo, rec?.questions[0].question);
   const [question, setQuestion] = useState("");
-  const [messages, setMessages] = useState<
-    Array<{ text: string; isUser: boolean; time: string }>
-  >([]);
   const [isInitializing, setIsInitializing] = useState(true);
   const [conversation, setConversation] = useState<Message[]>([]);
-  const [conversationItems, setConversationItems] = useState<
-    ConversationItem[]
-  >([]);
-  const [, updateState] = useState({});
-  const forceUpdate = useCallback(() => updateState({}), []);
+  // const [conversationItems, setConversationItems] = useState<
+  //   ConversationItem[]
+  // >([]);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [askedQuestions, setAskedQuestions] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [convo, setConvo] = useState([
+    {
+      role: "assistant",
+      content: "",
+    },
+  ]);
 
   const payload = {
     name: userInfo?.fullName,
@@ -67,6 +68,7 @@ function ChatBot({ userInfo, rec, onClose }: ChatBotProps) {
       setIsInitializing(false);
     }
   };
+  console.log({ conversation });
 
   useEffect(() => {
     if (isChatVisible) {
@@ -75,31 +77,37 @@ function ChatBot({ userInfo, rec, onClose }: ChatBotProps) {
   }, [isChatVisible]);
 
   useEffect(() => {
-    if (conversation.length > 0) {
-      const items = conversation.reduce(
-        (acc: ConversationItem[], message: Message) => {
-          if (message.role === "user") {
-            acc.push({ type: "user", messages: [message], currentIndex: 0 });
-          } else {
-            if (acc.length > 0 && acc[acc.length - 1].type === "assistant") {
-              acc[acc.length - 1].messages.push(message);
-            } else {
-              acc.push({
-                type: "assistant",
-                messages: [message],
-                currentIndex: 0,
-              });
-            }
-          }
-          return acc;
-        },
-        []
-      );
-      setConversationItems(items);
-    }
-  }, [conversation]);
+    let h = [
+      {
+        role: "assistant",
+        content: "",
+      },
+    ];
 
-  console.log({ conversationItems });
+    let newIndex = 0;
+
+    for (let i = 0; i < conversation?.length; i++) {
+      if (conversation?.[i]?.role == "assistant") {
+        h[newIndex].role = "assistant";
+        if (i == 0 || (conversation?.[i - 1]?.role == "user" && i != 2)) {
+          h[newIndex].content = conversation?.[i]?.content;
+        } else {
+          h[newIndex].content += `\n\n${conversation?.[i]?.content}`;
+        }
+      } else if (conversation?.[i]?.role == "user" && i != 1) {
+        newIndex = newIndex + 1;
+        (h[newIndex] = {
+          role: "user",
+          content: "",
+        }),
+          (h[newIndex].role = "user");
+        h[newIndex].content += conversation?.[i]?.content;
+      }
+    }
+
+    setConvo(h);
+    console.log({ h });
+  }, [conversation]);
 
   const scrollToBottom = (behavior: "auto" | "smooth" = "auto") => {
     if (chatContainerRef.current) {
@@ -112,7 +120,7 @@ function ChatBot({ userInfo, rec, onClose }: ChatBotProps) {
 
   useEffect(() => {
     scrollToBottom("smooth");
-  }, [conversationItems]);
+  }, [convo]);
 
   const handleQuestionSubmit = async () => {
     if (question.trim() && !isSubmitting) {
@@ -132,10 +140,6 @@ function ChatBot({ userInfo, rec, onClose }: ChatBotProps) {
         console.log("this is response", response);
         setConversation(response?.data.conversation);
         setAskedQuestions(response?.data.askedQuestions);
-        setConversationItems((prev) => [
-          ...prev,
-          { type: "user", messages: [userMessage], currentIndex: 0 },
-        ]);
         scrollToBottom("smooth");
       } catch (error) {
         console.error("Error getting chat response:", error);
@@ -144,46 +148,6 @@ function ChatBot({ userInfo, rec, onClose }: ChatBotProps) {
         setIsSubmitting(false);
       }
     }
-  };
-
-  const formatMessage = (content: string) => {
-    if (!content) return ""; // Add this line to handle undefined content
-    const lines = content?.split("\n");
-    let formattedContent = "";
-    let inList = false;
-    let inParagraph = false;
-
-    lines.forEach((line, index) => {
-      const trimmedLine = line.trim();
-      if (trimmedLine.match(/^\d+\./)) {
-        if (inParagraph) {
-          formattedContent += "</p>";
-          inParagraph = false;
-        }
-        if (!inList) {
-          formattedContent += "<ol>";
-          inList = true;
-        }
-        formattedContent += `<li>${trimmedLine}</li>`;
-      } else if (inList && trimmedLine === "") {
-        formattedContent += "</ol>";
-        inList = false;
-      } else if (trimmedLine !== "") {
-        if (!inParagraph) {
-          formattedContent += "<p>";
-          inParagraph = true;
-        }
-        formattedContent += line + " ";
-      } else if (inParagraph) {
-        formattedContent += "</p>";
-        inParagraph = false;
-      }
-    });
-
-    if (inList) formattedContent += "</ol>";
-    if (inParagraph) formattedContent += "</p>";
-
-    return formattedContent.trim();
   };
 
   const messageStyle = `
@@ -211,7 +175,7 @@ function ChatBot({ userInfo, rec, onClose }: ChatBotProps) {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-  }, [conversationItems]);
+  }, [convo]);
 
   return (
     <div
@@ -237,22 +201,22 @@ function ChatBot({ userInfo, rec, onClose }: ChatBotProps) {
         className="flex-grow mb-6 overflow-y-auto scroll-smooth"
       >
         <style>{messageStyle}</style>
-        {conversation.map((item, index) => {
+        {convo?.map((item, index) => {
           return item.content ? (
             <div
               key={index}
               className={`flex flex-col mb-4 ${
-                item.role === "assistant" ? "items-start" : "items-end"
+                item?.role === "assistant" ? "items-start" : "items-end"
               }`}
             >
               <div
                 className={`max-w-[80%] p-3 rounded-lg ${
-                  item.role === "assistant"
+                  item?.role === "assistant"
                     ? "bg-gray-200 text-gray-800"
                     : "bg-blue-500 text-white"
                 }`}
               >
-                {item.role === "assistant" && (
+                {item?.role === "assistant" && (
                   <div className="font-bold mb-1">Eddey</div>
                 )}
                 <Chatbox item={item} />

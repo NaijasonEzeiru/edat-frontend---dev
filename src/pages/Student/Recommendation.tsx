@@ -377,7 +377,7 @@ const Recommedation = () => {
                   </p>
                 </DialogTitle>
 
-                <DialogDescription className="flex flex-col md:flex-row gap-5">
+                <DialogDescription className="flex flex-col md:flex-row gap-5 overflow-auto max-h-[70vh]">
                   {currentStepPage === 4 ? (
                     <div className="bg-white p-6 rounded-lg">
                       <p className="text-lg font-medium mb-4">
