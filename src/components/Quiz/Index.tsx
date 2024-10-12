@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import katex from "katex";
 import {
   useAnalyzeResultMutation,
   useQuizRandomSelectMutation,
@@ -259,12 +260,53 @@ const Index = (props) => {
   };
 
   const QuizContent = () => {
+    const test = {
+      _id: "6702ce46c57feb7bce02640c",
+      objCode: "NM_16",
+      question:
+        "1:**\nA fraction can be expressed in different forms. Which of the following is NOT a way to express the fraction \\frac{3}{4}?",
+      optionA: "As a ratio (3:4)",
+      optionB: "As a decimal (0.75)",
+      optionC: "As a percentage (75%)",
+      optionD: "As a mixed number (3 \\frac{1}{4})",
+      answer: "D",
+      difficultyLevel: "1",
+      subject: "Mathematics",
+      bloomLevel: "Understanding",
+      explanation:
+        "A mixed number is a whole number and a fraction, not a way to express a fraction directly.",
+      validationResult: "The question is correct.",
+      isCorrect: true,
+      learningObjective:
+        "expressing fraction as ratio, decimal and percentage.",
+      recommendation: [],
+      createdAt: "2024-10-06T17:52:06.758Z",
+      updatedAt: "2024-10-06T17:52:06.758Z",
+      __v: 0,
+    };
+
+    function tex2html(val: typeof test) {
+      const v = val.question.matchAll(/\\.*?\}.*?\}/g);
+      console.log({ v });
+    }
+
+    tex2html(test);
+
     return (
       <div className="bg-background rounded-lg md:px-24 p-3 md:pt-14 md:pb-20 space-y-6">
         <h3 className="text-2xl font-medium capitalize">{data?.objective}</h3>
-        <h4 className="rounded bg-[#EBF0FC] px-4 py-5 font-medium first-letter:uppercase">
-          {currentQuiz?.question}
-        </h4>
+        {currentQuiz?.question && (
+          <h4
+            className="rounded bg-[#EBF0FC] px-4 py-5 font-medium first-letter:uppercase"
+            dangerouslySetInnerHTML={{
+              __html: currentQuiz?.question?.replaceAll(
+                /\\.*?\}.*?\}/g,
+                //
+                (match) => katex.renderToString(match)
+              ),
+            }}
+          ></h4>
+        )}
         <div>
           <div className="flex flex-col gap-3 mb-5 md:mb-0">
             <span className="flex items-center flex-col md:flex-row gap-3">
@@ -283,7 +325,15 @@ const Index = (props) => {
                 <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
                   A
                 </span>{" "}
-                {currentQuiz?.optionA}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: currentQuiz?.optionA?.replaceAll(
+                      /\\.*?\}.*?\}/g,
+                      //
+                      (match) => katex.renderToString(match)
+                    ),
+                  }}
+                ></span>
               </label>
               <label
                 className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
@@ -300,7 +350,15 @@ const Index = (props) => {
                 <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
                   B
                 </span>{" "}
-                {currentQuiz?.optionB}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: currentQuiz?.optionB?.replaceAll(
+                      /\\.*?\}.*?\}/g,
+                      //
+                      (match) => katex.renderToString(match)
+                    ),
+                  }}
+                ></span>
               </label>
             </span>
 
@@ -320,7 +378,15 @@ const Index = (props) => {
                 <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
                   C
                 </span>{" "}
-                {currentQuiz?.optionC}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: currentQuiz?.optionC?.replaceAll(
+                      /\\.*?\}.*?\}/g,
+                      //
+                      (match) => katex.renderToString(match)
+                    ),
+                  }}
+                ></span>
               </label>
               <label
                 className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
@@ -337,7 +403,15 @@ const Index = (props) => {
                 <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
                   D
                 </span>{" "}
-                {currentQuiz?.optionD}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: currentQuiz?.optionD?.replaceAll(
+                      /\\.*?\}.*?\}/g,
+                      //
+                      (match) => katex.renderToString(match)
+                    ),
+                  }}
+                ></span>
               </label>
             </span>
           </div>
@@ -355,15 +429,17 @@ const Index = (props) => {
         </div> */}
         <div className="relative md:pt-9">
           {/* {currentQuestion > 0 && ( */}
-          <Button
+          {/* <Button
             variant="outline"
-            // onClick={handlePrevious}
-            // disabled={isQuizCompleted}
+            onClick={() => {
+              setCurrentQuiz(currentIndex - 1);
+              setCurrentIndex(currentIndex - 1);
+            }}
             className="absolute"
             type="button"
           >
             Previous
-          </Button>
+          </Button> */}
 
           <Button
             onClick={handleNextQuestion}
