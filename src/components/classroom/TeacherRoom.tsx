@@ -4,8 +4,16 @@ import { Link, useLocation } from "react-router-dom";
 import {
   useFindAllObjectivesQuery,
   useCreateQuizMutation,
+  useFindAllQuizQuery,
+  useLazyGetAllQuizByObjCodeQuery,
 } from "../../features/api/apiSlice";
-import { Dialog } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -31,6 +39,7 @@ import {
 } from "../ui/breadcrumb";
 import { Loader } from "lucide-react";
 import { toast } from "sonner";
+import EditQuiz from "../Quiz/multiple-choice/editQuiz";
 
 const TeacherRoom = () => {
   let { state } = useLocation();
@@ -40,9 +49,11 @@ const TeacherRoom = () => {
     useFindAllObjectivesQuery();
   const [createQuiz, { isLoading: isLoadingQuiz }] = useCreateQuizMutation();
   // const { data: AllQuiz } = useFindAllQuizQuery();
+  // const { data: AllQuiz } = useGetAllQuizByObjCodeQuery("NM_6");
   const [openExamTypeDialog, setOpenExamTypeDialog] = useState(false);
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
-
+  const [openEditQuizDialog, setOpenEditQuizDialog] = useState(false);
+  const [getAllQuiz, { data }] = useLazyGetAllQuizByObjCodeQuery();
   const dialogRef = useRef(null);
   const [numberOfQuestions, setNumberOfQuestions] = useState("");
   const [search, setSearch] = useState("");
@@ -99,7 +110,9 @@ const TeacherRoom = () => {
     console.log("heere", payload);
     if (response.data.status === true) {
       dialogRef.current.close();
+      getAllQuiz(selectedObjective?.objCode);
       toast(response.data.message);
+      setOpenEditQuizDialog(true);
     } else {
       toast.error("Error creating quiz", {
         description: response.data.message,
@@ -267,7 +280,7 @@ const TeacherRoom = () => {
         </CardContent>
       </Card>
 
-      <div className="flex justify-end w-full">
+      <div className="flex justify-end w-full mt-5">
         <Link
           to="/teacher/class/create-report"
           state={{ studentData: state.data.numberOfStudents }}
@@ -276,45 +289,6 @@ const TeacherRoom = () => {
           Create Report
         </Link>
       </div>
-
-      {/* <Card x-chunk="dashboard-01-chunk-5">
-        <CardHeader className="px-6 py-3">
-          <CardTitle className="text-lg">quizzes</CardTitle>
-        </CardHeader>
-        <CardContent className="grid gap-2 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
-          {AllQuiz?.map((i, index) => {
-            return (
-              <div className="">
-                <div className="card bg-white border-2 border-slate-300 text-primary-content w-96">
-                  <div className="card-body px-3 py-3">
-                    <img src={Books} className=" h-[200px] rounded-md" />
-                    <h2 className="card-title text-slate-950">{i?.subject}</h2>
-                    <p className="text-slate-800">Topic: {i?.topic}</p>
-                    <div className="text-slate-950"></div>
-                    <div className="card-actions justify-start">
-                      <div className="flex-row flex">
-                        <div className="avatar">
-                          <div className="w-[50px] rounded-xl">
-                            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                          </div>
-                        </div>
-                        <div className="px-3 justify-center">
-                          <div className="text-slate-800 font-semibold text-[18px]">
-                            {i?.teacherName}
-                          </div>
-                          <div className="text-slate-800 font-semibold text-[14px]">
-                            {i?.classRoomName}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </CardContent>
-      </Card> */}
 
       <Dialog open={openQuizDialog} onOpenChange={setOpenQuizDialog}>
         <Examstyled
@@ -326,6 +300,21 @@ const TeacherRoom = () => {
           country={userInfo?.country}
           openDialog={setOpenQuizDialog}
         />
+      </Dialog>
+
+      <Dialog open={openEditQuizDialog} onOpenChange={setOpenEditQuizDialog}>
+        <DialogContent className="h-[90vh] max-w-[95vw]">
+          <DialogHeader>
+            <DialogTitle>Edit Questions</DialogTitle>
+            {/* <DialogDescription className="flex gap-3 pt-5 flex-col">
+            </DialogDescription> */}
+          </DialogHeader>
+          <div className="overflow-y-auto">
+            {data?.map((question, index) => (
+              <EditQuiz index={index} question={question} />
+            ))}
+          </div>
+        </DialogContent>
       </Dialog>
     </>
   );

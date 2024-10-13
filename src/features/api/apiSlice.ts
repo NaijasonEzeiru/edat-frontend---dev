@@ -14,8 +14,9 @@ const getToken = () => {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
+    baseUrl: "https://edat-backend.onrender.com",
     // baseUrl: "http://localhost:5000/",
-    baseUrl: "https://edatbackend.azurewebsites.net/",
+    // baseUrl: "https://edatbackend.azurewebsites.net/",
     // baseUrl:
     //   "https://edatbackend-production-frfhc5aagkhbhafk.eastus-01.azurewebsites.net/",
     prepareHeaders: async (headers) => {
@@ -235,6 +236,20 @@ export const apiSlice = createApi({
     findAllQuizById: builder.query({
       query: (id) => `/api/quiz/findQuizByClassId/${id}`,
       providesTags: ["Quiz"],
+    }),
+
+    getAllQuizByObjCode: builder.query({
+      query: (id) => `/api/quiz/getAllQuizByObjCode/${id}`,
+      providesTags: ["Quiz"],
+    }),
+
+    updateQuiz: builder.mutation({
+      query: (payload) => ({
+        url: `/api/quiz/updateOne`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["Quiz"],
     }),
 
     QuizRandomSelect: builder.mutation({
@@ -562,6 +577,9 @@ export const {
   useGetQuizResultByUserIdQuery,
   useGetStrengthsAndweaknessesMutation,
   useGetAllQuizMutation,
+  // useGetAllQuizByObjCodeQuery,
+  useUpdateQuizMutation,
+  useLazyGetAllQuizByObjCodeQuery,
 
   // notification
   useGetAllNotificationsByUserIdQuery,

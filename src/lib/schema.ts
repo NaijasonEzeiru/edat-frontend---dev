@@ -133,3 +133,25 @@ export const CreateClassroomSchema = z.object({
     required_error: "Please select a subject.",
   }),
 });
+
+export const EditQuizSchema = z.object({
+  _id: z.string({
+    required_error: "Please select a year group.",
+  }),
+  question: z.string({
+    required_error: "Please select an arm.",
+  }),
+  optionA: z.string({
+    required_error: "Please select a subject.",
+  }),
+  optionB: z.string({
+    required_error: "Please select a subject.",
+  }),
+  optionC: z.string({
+    required_error: "Please select a subject.",
+  }),
+  optionD: z.string({
+    required_error: "Please select a subject.",
+  }),
+  answer: z.enum(["A", "B", "C", "D"]),
+});
