@@ -1,3 +1,5 @@
+import { orgColumns } from "@/components/table/columns";
+import { DataTable } from "@/components/table/data-table";
 import { useMemo, useState } from "react";
 import countryList from "react-select-country-list";
 import {
@@ -182,6 +184,7 @@ const Index = () => {
             >
               Create Organization
             </label>
+            {/* <DataTable columns={orgColumns} data={data} isLoading={isLoading} /> */}
             <div className="overflow-x-auto">
               <table className="table">
                 <thead>

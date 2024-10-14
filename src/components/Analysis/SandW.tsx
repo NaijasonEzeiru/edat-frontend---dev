@@ -15,16 +15,6 @@ import {
   RadarChart,
 } from "recharts";
 
-// import {
-//   BarChart,
-//   Bar,
-//   XAxis,
-//   YAxis,
-//   CartesianGrid,
-//   Tooltip,
-//   Legend,
-// } from "recharts";
-
 import {
   ChartContainer,
   ChartTooltip,
@@ -54,7 +44,7 @@ const chartConfig = {
     color: "hsl(var(--chart-2))",
   },
   student: {
-    label: "Student Score",
+    label: `Your score`,
     color: "hsl(var(--chart-3))",
   },
 };
@@ -233,7 +223,7 @@ export function SandW({
                   dataKey="student"
                   fill="var(--color-student)"
                   radius={4}
-                  name="Student Score"
+                  name={`${userInfo?.fullName.split(" ")[0]}'s score`}
                 />
                 <Bar
                   dataKey="class"
