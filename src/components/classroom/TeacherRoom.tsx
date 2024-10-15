@@ -4,13 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 import {
   useFindAllObjectivesQuery,
   useCreateQuizMutation,
-  useFindAllQuizQuery,
   useLazyGetAllQuizByObjCodeQuery,
 } from "../../features/api/apiSlice";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -50,7 +48,7 @@ const TeacherRoom = () => {
   const [createQuiz, { isLoading: isLoadingQuiz }] = useCreateQuizMutation();
   // const { data: AllQuiz } = useFindAllQuizQuery();
   // const { data: AllQuiz } = useGetAllQuizByObjCodeQuery("NM_6");
-  const [openExamTypeDialog, setOpenExamTypeDialog] = useState(false);
+  // const [openExamTypeDialog, setOpenExamTypeDialog] = useState(false);
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
   const [openEditQuizDialog, setOpenEditQuizDialog] = useState(false);
   const [getAllQuiz, { data }] = useLazyGetAllQuizByObjCodeQuery();
@@ -60,6 +58,9 @@ const TeacherRoom = () => {
   const [filteredObjectives, setFilteredObjectives] = useState([]);
   const [selectedObjective, setSelectedObjective] = useState(null);
   const [followUp, setFollowUp] = useState("");
+
+  console.log({ allObjectives });
+  console.log({ data });
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -223,7 +224,10 @@ const TeacherRoom = () => {
         {/* <Button onClick={() => setOpenExamTypeDialog(true)}>Set task</Button> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="bg-orange-600 text-white">
+            <Button
+              variant="outline"
+              className="bg-orange-600 text-white hover:bg-orange-500 hover:text-white"
+            >
               Set a new task for students
             </Button>
           </DropdownMenuTrigger>

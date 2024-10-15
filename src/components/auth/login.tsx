@@ -29,10 +29,13 @@ export const LoginForm = () => {
     try {
       const response = await Login(data);
       if (response.error) {
-        toast(response.error.data.message);
+        toast.error("Login failed", {
+          description: response?.error?.data?.message,
+        });
         return;
       }
       if (response.data.token) {
+        toast("Login successful");
         const Token = response.data.token;
         localStorage.setItem("Token", Token);
         window.location.reload();

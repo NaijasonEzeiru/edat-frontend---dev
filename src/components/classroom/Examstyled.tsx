@@ -80,18 +80,16 @@ export default function Examstyled({
       const data = await res.json();
 
       if (res.ok) {
-        toast("Exam task created successfully");
         openDialog(false);
+        toast("Exam task created successfully");
       } else {
-        toast("Request failed.", {
+        toast.error("Request failed.", {
           description: "Something went wrong",
-          style: { color: "red" },
         });
       }
     } catch (err) {
-      toast("Request failed.", {
+      toast.error("Request failed.", {
         description: "Something went wrong",
-        style: { color: "red" },
       });
     }
   };

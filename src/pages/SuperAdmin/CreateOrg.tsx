@@ -1,115 +1,30 @@
 import { orgColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Loader } from "lucide-react";
 import { useMemo, useState } from "react";
 import countryList from "react-select-country-list";
+import { toast } from "sonner";
 import {
   useCreateAccountMutation,
   useGetAllAccountsQuery,
 } from "../../features/api/apiSlice";
 
-const LicenseModal = ({ isVisible, onClose, license }) => {
-  console.log("this is data ", license);
-  if (!isVisible) return null;
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 10;
-
-  const indexOfLastRecord = currentPage * recordsPerPage;
-  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = license.license.slice(
-    indexOfFirstRecord,
-    indexOfLastRecord
-  );
-
-  const totalPages = Math.ceil(license.license.length / recordsPerPage);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
-        <h2 className="text-xl font-bold mb-4">License Information</h2>
-        <p>
-          <strong>Name of Organization:</strong> {license.accountName}
-        </p>
-        <p>
-          <strong>Email:</strong> {license.email}
-        </p>
-        <p>
-          <strong>Category:</strong> {license.category}
-        </p>
-        <p>
-          <strong>Number of Licenses:</strong> {license.numberOfLicense}
-        </p>
-
-        <div className="overflow-x-auto mt-10">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>License</th>
-                <th>Parent License</th>
-                <th>Role</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentRecords.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.fullName ? item.fullName : "Not Assigned"}</td>
-                  <td>{item.email ? item.email : "Not Assigned"}</td>
-                  <td>{item.licenseCode}</td>
-                  <td>{item.parentLicense}</td>
-                  <td> {item.role ? item.role : "Not Assigned"}</td>
-                  {/* <td> {
-                      item.licenseLimit === 1 ? "Active" : "In-Active"
-                    }</td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex justify-between mt-4">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="btn btn-primary"
-          >
-            Previous
-          </button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="btn btn-primary"
-          >
-            Next
-          </button>
-        </div>
-
-        <button onClick={onClose} className="mt-4 btn btn-primary">
-          Close
-        </button>
-      </div>
-    </div>
-  );
-};
-
 const Index = () => {
   const options = useMemo(() => countryList().getData(), []);
+  const [showCreateOrgForm, setShowCreateOrgForm] = useState(false);
   const [accountName, SetAccountName] = useState("");
   const [contactFullName, setContactFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -118,12 +33,8 @@ const Index = () => {
   const [numberOfLicense, setNumberOfLicense] = useState("");
   const [licenseStatus, setLicenseStatus] = useState("active");
   const [country, setCountry] = useState<(typeof options)[0]>({});
-  const [showToast, setShowToast] = useState(false);
-  const [selectedLicense, setSelectedLicense] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const [createAccount, { isloading, isError, isSuccess }] =
-    useCreateAccountMutation();
+  const [createAccount] = useCreateAccountMutation();
   const { data, isLoading } = useGetAllAccountsQuery();
 
   const handleSubmit = async () => {
@@ -144,16 +55,21 @@ const Index = () => {
       console.log("res", response);
 
       if (response.error) {
-        alert(response.error.data.message);
+        toast.error("Organisation creation failed", {
+          description: response?.error?.data?.message,
+        });
       } else {
-        document.getElementById("my-drawer-4").checked = false;
-        setShowToast(true);
-        setTimeout(() => {
-          setShowToast(false);
-        }, 40000);
+        toast("Organisation created successfully");
+        setShowCreateOrgForm(false);
+        // document.getElementById("my-drawer-4").checked = false;
+        // setShowToast(true);
+        // setTimeout(() => {
+        //   setShowToast(false);
+        // }, 40000);
       }
     } catch (error) {
       console.error("Error creating account", error);
+      toast.error("Organisation creation failed");
     } finally {
       SetAccountName("");
       setContactFullName("");
@@ -163,223 +79,124 @@ const Index = () => {
       setNumberOfLicense("");
       setLicenseStatus("");
     }
-
-    console.log("payload", payload);
-  };
-
-  const handleViewLicense = (license) => {
-    setSelectedLicense(license);
-    setIsModalVisible(true);
   };
 
   return (
-    <div className="flex lg:max-w-full px-8 py-5">
-      <div className="justify-between">
-        <div className="drawer drawer-end">
-          <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content py-6">
-            <label
-              htmlFor="my-drawer-4"
-              className="drawer-button btn btn-primary mb-4"
-            >
-              Create Organization
-            </label>
-            {/* <DataTable columns={orgColumns} data={data} isLoading={isLoading} /> */}
-            <div className="overflow-x-auto">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>
-                      <input type="checkbox" className="checkbox" />
-                    </th>
-                    <th>Contact Details</th>
-                    <th>Name of Organization</th>
-                    <th>Email Address</th>
-                    <th>Category</th>
-                    <th>Number of Licenses</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data?.map((item, index) => (
-                    <tr key={index}>
-                      <th>
-                        <input type="checkbox" className="checkbox" />
-                      </th>
-                      <td>
-                        <div className="flex items-center gap-3">
-                          <div className="avatar">
-                            <div className="mask mask-squircle w-12 h-12">
-                              <img
-                                src="https://img.daisyui.com/tailwind-css-component-profile-5@56w.png"
-                                alt="Avatar Tailwind CSS Component"
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <div className="font-bold">
-                              {item.license[0].fullName}
-                            </div>
-                            <div className="text-sm opacity-50">Nigeria</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>{item.accountName}</td>
-                      <td>{item.license[0].email}</td>
-                      <td>{item.category}</td>
-                      <td>{item.numberOfLicense}</td>
-                      <td>
-                        <span
-                          className="badge badge-ghost badge-sm cursor-pointer"
-                          onClick={() => handleViewLicense(item)}
-                        >
-                          View License
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+    <>
+      <Sheet open={showCreateOrgForm} onOpenChange={setShowCreateOrgForm}>
+        <SheetTrigger asChild>
+          <Button className="float-right w-fit">Create organization</Button>
+        </SheetTrigger>
+        <SheetContent className="sm:w-[540px] overflow-auto">
+          <SheetHeader>
+            <SheetTitle>Create organization</SheetTitle>
+            {/* <SheetDescription>
+              Make changes to your profile here. Click save when you're done.
+            </SheetDescription> */}
+          </SheetHeader>
+          <div className="overflow-auto">
+            <div className="">
+              <div className="mt-4">
+                <div className="text-md font-sm py-2">Organization name</div>
+                <input
+                  value={accountName}
+                  onChange={(e) => SetAccountName(e.target.value)}
+                  type="text"
+                  placeholder="Organization name"
+                  className="input input-bordered w-full min-w-full"
+                />
+              </div>
 
-          <div className="drawer-side">
-            <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
-            <div className="w-[27%] bg-white min-h-screen flex flex-col px-5 justify-between">
-              <div className="flex-row justify-end py-3 flex">
-                <label
-                  htmlFor="my-drawer-4"
-                  className="drawer-button btn-circle btn btn-primary"
+              <div className="mt-4">
+                <div className="text-md font-sm py-2">
+                  Organization Contact Full Name
+                </div>
+                <input
+                  value={contactFullName}
+                  onChange={(e) => setContactFullName(e.target.value)}
+                  type="text"
+                  placeholder="Organization contact full Name"
+                  className="input input-bordered w-full min-w-full"
+                />
+              </div>
+
+              <div className="mt-4">
+                <div className="text-md font-sm py-2">
+                  Organization Contact Email
+                </div>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  placeholder="Organization contact email"
+                  className="input input-bordered w-full min-w-full"
+                />
+              </div>
+
+              <div className="mt-4">
+                <div className="text-md font-sm py-2">
+                  Organization Category
+                </div>
+                <select
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="select select-bordered w-full min-w-full"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </label>
+                  <option disabled selected>
+                    Select Organization Category
+                  </option>
+                  <option value="College">College</option>
+                  <option value="High School">High School</option>
+                  <option value="High School">Primary School</option>
+                  <option value="University">University</option>
+                </select>
               </div>
 
-              <div className="py-8">
-                <div className="mt-4">
-                  <div className="text-md font-sm py-2">Organization name</div>
-                  <input
-                    value={accountName}
-                    onChange={(e) => SetAccountName(e.target.value)}
-                    type="text"
-                    placeholder="Organization name"
-                    className="input input-bordered w-full min-w-full"
-                  />
-                </div>
+              <div className="mt-4">
+                <div className="text-md font-sm py-2">Number of License</div>
+                <input
+                  value={numberOfLicense}
+                  onChange={(e) => setNumberOfLicense(e.target.value)}
+                  type="number"
+                  placeholder="Number of license"
+                  className="input input-bordered w-full min-w-full"
+                />
+              </div>
 
-                <div className="mt-4">
-                  <div className="text-md font-sm py-2">
-                    Organization Contact Full Name
-                  </div>
-                  <input
-                    value={contactFullName}
-                    onChange={(e) => setContactFullName(e.target.value)}
-                    type="text"
-                    placeholder="Organization contact full Name"
-                    className="input input-bordered w-full min-w-full"
-                  />
-                </div>
-
-                <div className="mt-4">
-                  <div className="text-md font-sm py-2">
-                    Organization Contact Email
-                  </div>
-                  <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="text"
-                    placeholder="Organization contact email"
-                    className="input input-bordered w-full min-w-full"
-                  />
-                </div>
-
-                <div className="mt-4">
-                  <div className="text-md font-sm py-2">
-                    Organization Category
-                  </div>
-                  <select
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="select select-bordered w-full min-w-full"
-                  >
-                    <option disabled selected>
-                      Select Organization Category
+              <div className="mt-4">
+                <div className="text-md font-sm py-2">Counrtry</div>
+                <select
+                  onChange={(e) =>
+                    setCountry(
+                      options.find((country) => country.value == e.target.value)
+                    )
+                  }
+                  className="select select-bordered w-full min-w-full"
+                >
+                  {options.map((val) => (
+                    <option value={val.value} key={val.value}>
+                      {val.label}
                     </option>
-                    <option value="College">College</option>
-                    <option value="High School">High School</option>
-                    <option value="High School">Primary School</option>
-                    <option value="University">University</option>
-                  </select>
-                </div>
-
-                <div className="mt-4">
-                  <div className="text-md font-sm py-2">Number of License</div>
-                  <input
-                    value={numberOfLicense}
-                    onChange={(e) => setNumberOfLicense(e.target.value)}
-                    type="number"
-                    placeholder="Number of license"
-                    className="input input-bordered w-full min-w-full"
-                  />
-                </div>
-
-                <div className="mt-4">
-                  <div className="text-md font-sm py-2">Counrtry</div>
-                  <select
-                    onChange={(e) =>
-                      setCountry(
-                        options.find(
-                          (country) => country.value == e.target.value
-                        )
-                      )
-                    }
-                    className="select select-bordered w-full min-w-full"
-                  >
-                    {options.map((val) => (
-                      <option value={val.value} key={val.value}>
-                        {val.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="mt-4">
-                  <button
-                    disabled={isloading}
-                    onClick={handleSubmit}
-                    className="btn btn-wide min-w-full btn-primary"
-                  >
-                    {isloading ? (
-                      <span className="loading loading-spinner loading-md"></span>
-                    ) : (
-                      "Create Organization"
-                    )}
-                  </button>
-                </div>
+                  ))}
+                </select>
               </div>
+              <Button
+                disabled={isLoading}
+                className="w-full mt-4"
+                onClick={handleSubmit}
+              >
+                {isLoading && (
+                  <span className="mr-2 animate-spin">
+                    <Loader />
+                  </span>
+                )}
+                Create Organization
+              </Button>
             </div>
           </div>
-        </div>
-      </div>
-
-      <LicenseModal
-        isVisible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        license={selectedLicense}
-      />
-    </div>
+        </SheetContent>
+      </Sheet>
+      <DataTable columns={orgColumns} data={data || []} isLoading={isLoading} />
+    </>
   );
 };
 

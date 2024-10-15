@@ -90,6 +90,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { DataTable } from "./data-table";
 
 export type licenses = {
   email: string;
@@ -1210,24 +1211,20 @@ export const orgColumns: ColumnDef<org>[] = [
           <DialogTrigger asChild>
             <Button variant="outline">View Licenses</Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-[90vw] max-h-[90vh] overflow-x-hidden overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Edit profile</DialogTitle>
-              <DialogDescription>
+              <DialogTitle>Licenses</DialogTitle>
+              {/* <DialogDescription>
                 Make changes to your profile here. Click save when you're done.
-              </DialogDescription>
+              </DialogDescription> */}
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Input id="name" value="Pedro Duarte" className="col-span-3" />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Input id="username" value="@peduarte" className="col-span-3" />
-              </div>
+            <div className="overflow-x-auto">
+              <DataTable
+                columns={orgLicenseColumns}
+                data={license.license}
+                isLoading={false}
+              />
             </div>
-            <DialogFooter>
-              <Button type="submit">Save changes</Button>
-            </DialogFooter>
           </DialogContent>
         </Dialog>
       );
@@ -1235,15 +1232,33 @@ export const orgColumns: ColumnDef<org>[] = [
   },
 ];
 
-// export type org = {
-//   accountName: string;
-//   email: string;
-//   category: string;
-//   numberOfLicense: string;
-//   license: {
-//     licenseCode: string;
-//     parentLicense: string;
-//     fullName?: string;
-//     role?: string;
-//   }[];
-// };
+export const orgLicenseColumns: ColumnDef<org["license"][0]>[] = [
+  {
+    header: "Name",
+    cell: ({ row }) => {
+      return (
+        <div className="">{row?.original?.fullName || "Not assigned"}</div>
+      );
+    },
+  },
+  {
+    header: "Email",
+    cell: ({ row }) => {
+      return <div className="">{row?.original?.email || "Not assigned"}</div>;
+    },
+  },
+  {
+    accessorKey: "licenseCode",
+    header: "License",
+  },
+  {
+    accessorKey: "parentLicense",
+    header: "Parent license",
+  },
+  {
+    header: "Role",
+    cell: ({ row }) => {
+      return <div className="">{row?.original?.role || "Not assigned"}</div>;
+    },
+  },
+];

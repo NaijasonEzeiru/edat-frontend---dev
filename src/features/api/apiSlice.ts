@@ -14,11 +14,11 @@ const getToken = () => {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://edat-backend.onrender.com",
+    // baseUrl: "https://edat-backend.onrender.com",
     // baseUrl: "http://localhost:5000/",
     // baseUrl: "https://edatbackend.azurewebsites.net/",
-    // baseUrl:
-    //   "https://edatbackend-production-frfhc5aagkhbhafk.eastus-01.azurewebsites.net/",
+    baseUrl:
+      "https://edatbackend-production-frfhc5aagkhbhafk.eastus-01.azurewebsites.net/",
     prepareHeaders: async (headers) => {
       const token = getToken();
       if (token) {
