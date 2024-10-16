@@ -34,8 +34,8 @@ const Index = () => {
   const [licenseStatus, setLicenseStatus] = useState("active");
   const [country, setCountry] = useState<(typeof options)[0]>({});
 
-  const [createAccount] = useCreateAccountMutation();
-  const { data, isLoading } = useGetAllAccountsQuery();
+  const [createAccount, { isLoading }] = useCreateAccountMutation();
+  const { data, isLoading: gettingAccounts } = useGetAllAccountsQuery();
 
   const handleSubmit = async () => {
     const payload = {
@@ -195,7 +195,11 @@ const Index = () => {
           </div>
         </SheetContent>
       </Sheet>
-      <DataTable columns={orgColumns} data={data || []} isLoading={isLoading} />
+      <DataTable
+        columns={orgColumns}
+        data={data || []}
+        isLoading={gettingAccounts}
+      />
     </>
   );
 };

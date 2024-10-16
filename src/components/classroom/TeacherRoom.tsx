@@ -48,8 +48,9 @@ const TeacherRoom = () => {
   const [createQuiz, { isLoading: isLoadingQuiz }] = useCreateQuizMutation();
   // const { data: AllQuiz } = useFindAllQuizQuery();
   // const { data: AllQuiz } = useGetAllQuizByObjCodeQuery("NM_6");
-  // const [openExamTypeDialog, setOpenExamTypeDialog] = useState(false);
+  const [openExamTypeDialog, setOpenExamTypeDialog] = useState(false);
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
   const [openEditQuizDialog, setOpenEditQuizDialog] = useState(false);
   const [getAllQuiz, { data }] = useLazyGetAllQuizByObjCodeQuery();
   const dialogRef = useRef(null);
@@ -59,8 +60,8 @@ const TeacherRoom = () => {
   const [selectedObjective, setSelectedObjective] = useState(null);
   const [followUp, setFollowUp] = useState("");
 
-  console.log({ allObjectives });
-  console.log({ data });
+  console.log({ allObjectives, data });
+  // console.log({ data: data?.filter((val) => val.country == "United Kingdom") });
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -110,9 +111,12 @@ const TeacherRoom = () => {
     console.log(response);
     console.log("heere", payload);
     if (response.data.status === true) {
-      dialogRef.current.close();
-      getAllQuiz(selectedObjective?.objCode);
+      getAllQuiz({
+        lo: selectedObjective?.objective,
+        country: userInfo?.country,
+      });
       toast(response.data.message);
+      setOpenQuizDialog(false);
       setOpenEditQuizDialog(true);
     } else {
       toast.error("Error creating quiz", {
@@ -137,92 +141,91 @@ const TeacherRoom = () => {
         </BreadcrumbList>
       </Breadcrumb>
       {/* create class modal */}
-      <dialog id="my_modal_3" className="modal" ref={dialogRef}>
-        <div className="modal-box w-11/12 max-w-5xl">
-          <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-              ✕
-            </button>
-          </form>
-          <h3 className="font-bold text-lg">Create Quiz</h3>
+      <Dialog open={openQuizDialog} onOpenChange={setOpenQuizDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create Quiz</DialogTitle>
+            {/* <DialogDescription className="flex gap-3 pt-5 flex-col">
+            </DialogDescription> */}
+            <div className="modal-box w-11/12 max-w-5xl">
+              <div className="mt-4">
+                <Label className="form-control w-full min-w-full">
+                  <div className="label mt-4">
+                    <span className="label-text font-medium">
+                      Search learning outcome
+                    </span>
+                  </div>
 
-          <div className="mt-4">
-            <Label className="form-control w-full min-w-full">
-              <div className="label mt-4">
-                <span className="label-text font-medium">
-                  Search learning outcome
-                </span>
+                  <Label className="input input-bordered flex items-center gap-2 relative">
+                    <Input
+                      value={search}
+                      onChange={handleSearchChange}
+                      type="text"
+                      className="w-full"
+                      placeholder="Search"
+                    />
+                    {filteredObjectives.length > 0 && (
+                      <ul className="absolute left-0 top-full bg-white border border-gray-300 w-full  overflow-y-auto">
+                        {filteredObjectives.map((objective, index) => (
+                          <li
+                            key={index}
+                            className="p-4 cursor-pointer first-letter:capitalize hover:bg-gray-100"
+                            onClick={() => handleObjectiveSelect(objective)}
+                          >
+                            {objective?.objective}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </Label>
+
+                  <div className="label mt-4">
+                    <span className="label-text font-medium">
+                      Number of questions
+                    </span>
+                  </div>
+                  <Label className="input input-bordered flex items-center gap-2">
+                    <Input
+                      value={numberOfQuestions}
+                      onChange={(e) => setNumberOfQuestions(e.target.value)}
+                      type="text"
+                      className="w-full"
+                      placeholder="Number of questions"
+                    />
+                  </Label>
+
+                  <div className="label mt-4">
+                    <span className="label-text font-medium">
+                      Describe follow-up learning activities
+                    </span>
+                  </div>
+                  <textarea
+                    value={followUp}
+                    onChange={(e) => setFollowUp(e.target.value)}
+                    placeholder="Describe follow-up learning activities"
+                    className="textarea textarea-bordered textarea-lg w-full max-w-full min-w-full"
+                  ></textarea>
+                </Label>
               </div>
-
-              <Label className="input input-bordered flex items-center gap-2 relative">
-                <Input
-                  value={search}
-                  onChange={handleSearchChange}
-                  type="text"
-                  className="w-full"
-                  placeholder="Search"
-                />
-                {filteredObjectives.length > 0 && (
-                  <ul className="absolute left-0 top-full bg-white border border-gray-300 w-full  overflow-y-auto">
-                    {filteredObjectives.map((objective, index) => (
-                      <li
-                        key={index}
-                        className="p-4 cursor-pointer first-letter:capitalize hover:bg-gray-100"
-                        onClick={() => handleObjectiveSelect(objective)}
-                      >
-                        {objective?.objective}
-                      </li>
-                    ))}
-                  </ul>
+              <Button
+                onClick={handleSubmit}
+                className="mt-4 w-full"
+                disabled={isLoadingQuiz}
+              >
+                {isLoadingQuiz && (
+                  <span className="mr-2 animate-spin">
+                    <Loader />
+                  </span>
                 )}
-              </Label>
-
-              <div className="label mt-4">
-                <span className="label-text font-medium">
-                  Number of questions
-                </span>
-              </div>
-              <Label className="input input-bordered flex items-center gap-2">
-                <Input
-                  value={numberOfQuestions}
-                  onChange={(e) => setNumberOfQuestions(e.target.value)}
-                  type="text"
-                  className="w-full"
-                  placeholder="Number of questions"
-                />
-              </Label>
-
-              <div className="label mt-4">
-                <span className="label-text font-medium">
-                  Describe follow-up learning activities
-                </span>
-              </div>
-              <textarea
-                value={followUp}
-                onChange={(e) => setFollowUp(e.target.value)}
-                placeholder="Describe follow-up learning activities"
-                className="textarea textarea-bordered textarea-lg w-full max-w-full min-w-full"
-              ></textarea>
-            </Label>
-          </div>
-          <Button
-            onClick={handleSubmit}
-            className="mt-4 w-full"
-            disabled={isLoadingQuiz}
-          >
-            {isLoadingQuiz && (
-              <span className="mr-2 animate-spin">
-                <Loader />
-              </span>
-            )}
-            Create Quiz
-          </Button>
-        </div>
-      </dialog>
+                Create Quiz
+              </Button>
+            </div>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
 
       <div className="flex flex-row justify-end mb-5">
-        {/* <Button onClick={() => setOpenExamTypeDialog(true)}>Set task</Button> */}
-        <DropdownMenu>
+        <DropdownMenu open={openDropdown} onOpenChange={setOpenDropdown}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
@@ -237,17 +240,16 @@ const TeacherRoom = () => {
             <DropdownMenuGroup>
               <DropdownMenuItem
                 onClick={() => {
-                  // setOpenQuizDialog(true);
-                  document.getElementById("my_modal_3").showModal();
-                  setOpenExamTypeDialog(false);
+                  setOpenQuizDialog(true);
+                  setOpenDropdown(false);
                 }}
               >
                 Multiple choice questions
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  setOpenQuizDialog(true);
-                  setOpenExamTypeDialog(false);
+                  setOpenExamTypeDialog(true);
+                  setOpenDropdown(false);
                 }}
               >
                 Exam styled questions
@@ -294,7 +296,7 @@ const TeacherRoom = () => {
         </Link>
       </div>
 
-      <Dialog open={openQuizDialog} onOpenChange={setOpenQuizDialog}>
+      <Dialog open={openExamTypeDialog} onOpenChange={setOpenExamTypeDialog}>
         <Examstyled
           filteredObjectives={filteredObjectives}
           handleObjectiveSelect={handleObjectiveSelect}
@@ -302,7 +304,7 @@ const TeacherRoom = () => {
           search={search}
           classId={state?.data?._id}
           country={userInfo?.country}
-          openDialog={setOpenQuizDialog}
+          openDialog={setOpenExamTypeDialog}
         />
       </Dialog>
 
@@ -317,6 +319,11 @@ const TeacherRoom = () => {
             {data?.map((question, index) => (
               <EditQuiz index={index} question={question} />
             ))}
+            {/* {data
+              ?.filter((val) => val?.country)
+              .map((question, index) => (
+                <EditQuiz index={index} question={question} />
+              ))} */}
           </div>
         </DialogContent>
       </Dialog>

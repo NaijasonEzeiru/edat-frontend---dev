@@ -78,6 +78,10 @@
   @apply hidden;
 }
 
+.katex-html {
+  display: none !important;
+}
+
 /* * {
   outline: solid red 1px;
 } */

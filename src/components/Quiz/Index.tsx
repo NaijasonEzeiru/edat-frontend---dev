@@ -716,23 +716,31 @@ const Index = (props) => {
                 result?.isCorrect ? "bg-green-200" : "bg-red-200"
               }`}
             >
-              <div className="font-semibold text-[18px]">
-                Question: {result?.question}
-              </div>
-              <div className="text-sm">
-                Your answer: {result?.selectedAnswer.toUpperCase()}
-              </div>
-              <div className="text-sm">
-                Correct answer: {result?.correctAnswer.toUpperCase()}
-              </div>
-              <div className="text-sm">
-                Correct option: {result?.correctOption}
-              </div>
-              <div className="text-sm font-bold">
-                {result?.isCorrect ? "Correct" : "Wrong"}
+              <div className="flex gap-4 justify-between items-center">
+                <div className="">
+                  <p className="font-semibold text-[18px]">
+                    Question: {result?.question}
+                  </p>
+                  <p className="text-sm">
+                    Your answer: {result?.selectedAnswer.toUpperCase()}
+                  </p>
+                  <p className="text-sm">
+                    Correct answer: {result?.correctAnswer.toUpperCase()}
+                  </p>
+                  <p className="text-sm">
+                    Correct option: {result?.correctOption}
+                  </p>
+                </div>
+                <p
+                  className={`text-sm font-bold px-3 py-1 rounded ${
+                    result?.isCorrect ? "bg-green-300" : "bg-red-300"
+                  }`}
+                >
+                  {result?.isCorrect ? "Correct" : "Wrong"}
+                </p>
               </div>
               {result?.analysis && (
-                <div className="text-sm">
+                <div className="text-sm border rounded mt-4 p-2 border-red-300">
                   <TextWithLineBreaks texts={result?.analysis} />
                 </div>
               )}

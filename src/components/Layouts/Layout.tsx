@@ -96,7 +96,7 @@ export function Layout() {
         },
         {
           id: 3,
-          name: "Students performance",
+          name: "Classroom performance",
           href: `/teacher/report`,
           icon: <LineChart className="h-4 w-4" />,
           iconMobile: <LineChart className="h-5 w-5" />,

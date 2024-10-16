@@ -239,7 +239,8 @@ export const apiSlice = createApi({
     }),
 
     getAllQuizByObjCode: builder.query({
-      query: (id) => `/api/quiz/getAllQuizByObjCode/${id}`,
+      query: ({ lo, country }) =>
+        `/api/quiz/getAllQuizByObjCode?country=${country}&lo=${lo}`,
       providesTags: ["Quiz"],
     }),
 

@@ -166,7 +166,7 @@ export function RegisterForm({ toggle }: { toggle: () => void }) {
                 <SelectContent>
                   {/* <SelectLabel>Roles</SelectLabel> */}
                   <SelectItem value="Nigeria">Nigeria</SelectItem>
-                  <SelectItem value="England">England</SelectItem>
+                  <SelectItem value="United Kingdom">United Kingdom</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
