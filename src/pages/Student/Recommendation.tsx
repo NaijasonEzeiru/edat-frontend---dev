@@ -30,51 +30,6 @@ type Objective = {
   scores: number;
 };
 
-const pp = [
-  {
-    avg_score: 20,
-    objective_id: "The Basics of Grammar and Punctuation",
-    subject: "English",
-    subject_important_ranking: 1,
-  },
-  {
-    avg_score: 25,
-    objective_id: "Academic Writing Conventions",
-    subject: "English",
-    subject_important_ranking: 1,
-  },
-  {
-    avg_score: 18,
-    objective_id: "Principles of Literature Interpretation",
-    subject: "English",
-    subject_important_ranking: 1,
-  },
-  {
-    avg_score: 30,
-    objective_id: "Digestive System",
-    subject: "Biology",
-    subject_important_ranking: 1,
-  },
-  {
-    avg_score: 45,
-    objective_id: "Evolution",
-    subject: "Biology",
-    subject_important_ranking: 1,
-  },
-  {
-    avg_score: 28,
-    objective_id: "Cell structure and function",
-    subject: "Biology",
-    subject_important_ranking: 1,
-  },
-  {
-    avg_score: 38,
-    objective_id: "Ecology",
-    subject: "Biology",
-    subject_important_ranking: 1,
-  },
-];
-
 const Recommedation = () => {
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const { data } = useRecommendObjectivesQuery();
@@ -117,7 +72,7 @@ const Recommedation = () => {
 
       // );
       setRecs(
-        [...v, ...pp].sort(function (a, b) {
+        [...v].sort(function (a, b) {
           return a?.subject_important_ranking + b?.subject_important_ranking;
         })
       );

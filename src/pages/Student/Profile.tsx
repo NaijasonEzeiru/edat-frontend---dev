@@ -3,6 +3,7 @@ import {
   EditProfileForm,
 } from "@/components/Profile/editProfile";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getInitialsFromFullName } from "@/lib/utils";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -40,9 +41,11 @@ const Index = () => {
         </div>
       </div>
 
-      <div className="flex">
-        <div className="border-r w-52 pr-8 flex-none mt-9">
-          <Button
+      <Tabs defaultValue="data" className="flex">
+        <TabsList className="border-r w-52 pr-8 flex-none flex mt-9">
+          <TabsTrigger value="data">Bio data</TabsTrigger>
+          <TabsTrigger value="edit">Edit profile</TabsTrigger>
+          {/* <Button
             variant="outline"
             className="w-full bg-[#E6EFF5] justify-start"
           >
@@ -54,9 +57,10 @@ const Index = () => {
             className="w-full mt-6 justify-start"
           >
             Edit profile
-          </Button>
-        </div>
-        <div className="font-medium text-sm px-8 mt-9">
+          </Button> */}
+        </TabsList>
+        <TabsContent value="data" className="font-medium text-sm px-8 mt-9">
+          {/* <div className="font-medium text-sm px-8 mt-9"> */}
           <h3 className="text-2xl text-[#CACED8]">Bio data</h3>
           {userInfo?.bio && (
             <div className="mt-7 font-light border-primary/10 rounded border-[20px] p-3">
@@ -79,14 +83,20 @@ const Index = () => {
           <Button className="w-full mt-7" onClick={handleUpdate}>
             {userInfo?.bio ? "Update Bio" : "Submit"}
           </Button>
-        </div>
-        {/* <div className="font-medium text-sm px-8 mt-9 w-full">
+        </TabsContent>
+        {/* </div> */}
+        <TabsContent
+          value="edit"
+          className="font-medium text-sm px-8 mt-9 w-full"
+        >
+          {/* <div className="font-medium text-sm px-8 mt-9 w-full"> */}
           <h3 className="text-2xl text-[#CACED8]">Edit Profile</h3>
-          <EditProfileForm />
+          <EditProfileForm userInfo={userInfo} />
           <h3 className="text-2xl text-[#CACED8] mt-9 mb-4">Edit Password</h3>
           <EditPasswordForm />
-        </div> */}
-      </div>
+          {/* </div> */}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

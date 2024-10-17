@@ -27,23 +27,46 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useState } from "react";
+import { useUpdateProfileMutation } from "@/features/api/apiSlice";
+import { toast } from "sonner";
 
-export function EditProfileForm() {
+export function EditProfileForm({ userInfo }) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const isLoading = false;
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  console.log({ userInfo });
   // 1. Define your form.
   const form = useForm<z.infer<typeof EditProfileSchema>>({
     resolver: zodResolver(EditProfileSchema),
     defaultValues: {
-      //   username: "",
+      country: userInfo?.country || "",
+      email: userInfo?.email || "",
+      fullName: userInfo?.fullName || "",
+      gender: userInfo?.gender || "",
+      dob:
+        new Date(userInfo.dob.year, userInfo.dob.month, userInfo.dob.day) || "",
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof EditProfileSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof EditProfileSchema>) {
+    try {
+      const response = await updateProfile({
+        id: userInfo._id,
+        payload: values,
+      });
+      if (response.error) {
+        toast.error("Profile edit failed", {
+          description: response?.error?.data?.message,
+        });
+      } else {
+        toast(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Profile edit failed", {
+        description: "Something went wrong",
+      });
+      console.log("error", error);
+    }
   }
 
   return (
@@ -309,7 +332,7 @@ export function EditPasswordForm() {
             />
           </div>
         </div>
-        <Button disabled={isLoading} className="w-fit self-end" size="sm">
+        <Button disabled className="w-fit self-end" size="sm">
           {isLoading && (
             <span className="mr-2 animate-spin">
               <Loader />

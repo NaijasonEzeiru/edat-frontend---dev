@@ -16,9 +16,9 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     // baseUrl: "https://edat-backend.onrender.com",
     // baseUrl: "http://localhost:5000/",
-    // baseUrl: "https://edatbackend.azurewebsites.net/",
-    baseUrl:
-      "https://edatbackend-production-frfhc5aagkhbhafk.eastus-01.azurewebsites.net/",
+    baseUrl: "https://edatbackend.azurewebsites.net/",
+    // baseUrl:
+    //   "https://edatbackend-production-frfhc5aagkhbhafk.eastus-01.azurewebsites.net/",
     prepareHeaders: async (headers) => {
       const token = getToken();
       if (token) {
@@ -355,6 +355,15 @@ export const apiSlice = createApi({
       invalidatesTags: ["CurrentUser"],
     }),
 
+    updateProfile: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `/api/users/updateOne/${id}`,
+        method: "PUT",
+        body: { payload },
+      }),
+      invalidatesTags: ["CurrentUser", "User"],
+    }),
+
     // Notifications
     getAllNotificationsByUserId: builder.query({
       query: (id) => `/api/users/getAllNotificationsByUserId/${id}`,
@@ -525,6 +534,7 @@ export const {
   useStudentRecommendationMutation,
   useRecommendObjectivesQuery,
   useUpdateNumberOfLearningObjectiveMutation,
+  useUpdateProfileMutation,
 
   //classRoom
   useCreateClassRoomMutation,
