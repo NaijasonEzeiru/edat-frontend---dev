@@ -107,6 +107,8 @@ const Index = (props) => {
         ? currentQuiz?.optionD
         : "";
 
+    console.log({ correctOptionValue });
+
     const wrongOptionValue =
       selectedAnswer.toLowerCase() === "a"
         ? currentQuiz?.optionA
@@ -117,6 +119,8 @@ const Index = (props) => {
         : selectedAnswer.toLowerCase() === "d"
         ? currentQuiz?.optionD
         : "";
+
+    console.log({ wrongOptionValue });
 
     const result = {
       question: currentQuiz?.question,
@@ -260,38 +264,6 @@ const Index = (props) => {
   };
 
   const QuizContent = () => {
-    const test = {
-      _id: "6702ce46c57feb7bce02640c",
-      objCode: "NM_16",
-      question:
-        "1:**\nA fraction can be expressed in different forms. Which of the following is NOT a way to express the fraction \\frac{3}{4}?",
-      optionA: "As a ratio (3:4)",
-      optionB: "As a decimal (0.75)",
-      optionC: "As a percentage (75%)",
-      optionD: "As a mixed number (3 \\frac{1}{4})",
-      answer: "D",
-      difficultyLevel: "1",
-      subject: "Mathematics",
-      bloomLevel: "Understanding",
-      explanation:
-        "A mixed number is a whole number and a fraction, not a way to express a fraction directly.",
-      validationResult: "The question is correct.",
-      isCorrect: true,
-      learningObjective:
-        "expressing fraction as ratio, decimal and percentage.",
-      recommendation: [],
-      createdAt: "2024-10-06T17:52:06.758Z",
-      updatedAt: "2024-10-06T17:52:06.758Z",
-      __v: 0,
-    };
-
-    function tex2html(val: typeof test) {
-      const v = val.question.matchAll(/\\.*?\}.*?\}/g);
-      console.log({ v });
-    }
-
-    tex2html(test);
-
     return (
       <div className="bg-background rounded-lg md:px-24 p-3 md:pt-14 md:pb-20 space-y-6">
         <h3 className="text-2xl font-medium capitalize">{data?.objective}</h3>
@@ -308,112 +280,107 @@ const Index = (props) => {
           ></h4>
         )}
         <div>
-          <div className="flex flex-col gap-3 mb-5 md:mb-0">
-            <span className="flex items-center flex-col md:flex-row gap-3">
-              <label
-                className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
-                  selectedAnswer === "a" && "bg-primary/20"
-                } border-primary text-start items-center flex gap-3 cursor-pointer`}
-                onClick={() => handleAnswerSelect("a")}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedAnswer === "a"}
-                  onChange={() => handleAnswerSelect("a")}
-                  className="appearance-none"
-                />
-                <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
-                  A
-                </span>{" "}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: currentQuiz?.optionA?.replaceAll(
-                      /\\.*?\}.*?\}/g,
-                      //
-                      (match) => katex.renderToString(match)
-                    ),
-                  }}
-                ></span>
-              </label>
-              <label
-                className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
-                  selectedAnswer === "b" && "bg-primary/20"
-                } border-primary text-start items-center flex gap-3 cursor-pointer`}
-                onClick={() => handleAnswerSelect("b")}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedAnswer === "b"}
-                  onChange={() => handleAnswerSelect("b")}
-                  className="appearance-none"
-                />
-                <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
-                  B
-                </span>{" "}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: currentQuiz?.optionB?.replaceAll(
-                      /\\.*?\}.*?\}/g,
-                      //
-                      (match) => katex.renderToString(match)
-                    ),
-                  }}
-                ></span>
-              </label>
-            </span>
-
-            <span className="flex items-center flex-col md:flex-row gap-3">
-              <label
-                className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
-                  selectedAnswer === "c" && "bg-primary/20"
-                } border-primary text-start items-center flex gap-3 cursor-pointer`}
-                onClick={() => handleAnswerSelect("c")}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedAnswer === "c"}
-                  onChange={() => handleAnswerSelect("c")}
-                  className="appearance-none"
-                />
-                <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
-                  C
-                </span>{" "}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: currentQuiz?.optionC?.replaceAll(
-                      /\\.*?\}.*?\}/g,
-                      //
-                      (match) => katex.renderToString(match)
-                    ),
-                  }}
-                ></span>
-              </label>
-              <label
-                className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
-                  selectedAnswer === "d" && "bg-primary/20"
-                } border-primary text-start items-center flex gap-3 cursor-pointer`}
-                onClick={() => handleAnswerSelect("d")}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedAnswer === "d"}
-                  onChange={() => handleAnswerSelect("d")}
-                  className="appearance-none"
-                />
-                <span className="flex items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
-                  D
-                </span>{" "}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: currentQuiz?.optionD?.replaceAll(
-                      /\\.*?\}.*?\}/g,
-                      //
-                      (match) => katex.renderToString(match)
-                    ),
-                  }}
-                ></span>
-              </label>
-            </span>
+          <div className="grid md:grid-cols-2 gap-3 mb-5 md:mb-0">
+            <label
+              className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
+                selectedAnswer === "a" && "bg-primary/20"
+              } border-primary text-start items-center flex gap-3 cursor-pointer`}
+              onClick={() => handleAnswerSelect("a")}
+            >
+              <input
+                type="checkbox"
+                checked={selectedAnswer === "a"}
+                onChange={() => handleAnswerSelect("a")}
+                className="appearance-none"
+              />
+              <span className="flex flex-none items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
+                A
+              </span>{" "}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: currentQuiz?.optionA?.replaceAll(
+                    /\\.*?\}.*?\}/g,
+                    //
+                    (match) => katex.renderToString(match)
+                  ),
+                }}
+              ></span>
+            </label>
+            <label
+              className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
+                selectedAnswer === "b" && "bg-primary/20"
+              } border-primary text-start items-center flex gap-3 cursor-pointer`}
+              onClick={() => handleAnswerSelect("b")}
+            >
+              <input
+                type="checkbox"
+                checked={selectedAnswer === "b"}
+                onChange={() => handleAnswerSelect("b")}
+                className="appearance-none"
+              />
+              <span className="flex flex-none items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
+                B
+              </span>{" "}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: currentQuiz?.optionB?.replaceAll(
+                    /\\.*?\}.*?\}/g,
+                    //
+                    (match) => katex.renderToString(match)
+                  ),
+                }}
+              ></span>
+            </label>
+            <label
+              className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
+                selectedAnswer === "c" && "bg-primary/20"
+              } border-primary text-start items-center flex gap-3 cursor-pointer`}
+              onClick={() => handleAnswerSelect("c")}
+            >
+              <input
+                type="checkbox"
+                checked={selectedAnswer === "c"}
+                onChange={() => handleAnswerSelect("c")}
+                className="appearance-none"
+              />
+              <span className="flex flex-none items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
+                C
+              </span>{" "}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: currentQuiz?.optionC?.replaceAll(
+                    /\\.*?\}.*?\}/g,
+                    //
+                    (match) => katex.renderToString(match)
+                  ),
+                }}
+              ></span>
+            </label>
+            <label
+              className={`w-full py-4 rounded border text-foreground hover:border-lime-700 text-lg font-semibold ${
+                selectedAnswer === "d" && "bg-primary/20"
+              } border-primary text-start items-center flex gap-3 cursor-pointer`}
+              onClick={() => handleAnswerSelect("d")}
+            >
+              <input
+                type="checkbox"
+                checked={selectedAnswer === "d"}
+                onChange={() => handleAnswerSelect("d")}
+                className="appearance-none"
+              />
+              <span className="flex flex-none items-center justify-center size-7 text-xl font-medium bg-primary text-primary-foreground rounded-full">
+                D
+              </span>{" "}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: currentQuiz?.optionD?.replaceAll(
+                    /\\.*?\}.*?\}/g,
+                    //
+                    (match) => katex.renderToString(match)
+                  ),
+                }}
+              ></span>
+            </label>
           </div>
         </div>
         {/* <div className="flex justify-between">
@@ -718,18 +685,35 @@ const Index = (props) => {
             >
               <div className="flex gap-4 justify-between items-center">
                 <div className="">
-                  <p className="font-semibold text-[18px]">
-                    Question: {result?.question}
-                  </p>
+                  <p
+                    className="font-semibold text-[18px]"
+                    dangerouslySetInnerHTML={{
+                      __html: result?.question?.replaceAll(
+                        /\\.*?\}.*?\}/g,
+                        //
+                        (match) => katex.renderToString(match)
+                      ),
+                    }}
+                  ></p>
                   <p className="text-sm">
-                    Your answer: {result?.selectedAnswer.toUpperCase()}
+                    Your answer: {result?.selectedAnswer?.toUpperCase()}
                   </p>
                   <p className="text-sm">
                     Correct answer: {result?.correctAnswer.toUpperCase()}
                   </p>
-                  <p className="text-sm">
-                    Correct option: {result?.correctOption}
-                  </p>
+                  <span className="flex gap-1">
+                    <p>Correct option:</p>
+                    <p
+                      className="text-sm"
+                      dangerouslySetInnerHTML={{
+                        __html: result?.correctOption?.replaceAll(
+                          /\.*?}.*?}/g,
+                          //
+                          (match) => katex.renderToString(match)
+                        ),
+                      }}
+                    ></p>
+                  </span>
                 </div>
                 <p
                   className={`text-sm font-bold px-3 py-1 rounded ${

@@ -70,13 +70,6 @@ export function Layout() {
           icon: <BookOpen className="h-4 w-4" />,
           iconMobile: <BookOpen className="h-5 w-5" />,
         },
-        {
-          id: 6,
-          name: "Report",
-          href: `/student/report`,
-          icon: <LineChart className="h-4 w-4" />,
-          iconMobile: <LineChart className="h-5 w-5" />,
-        },
       ]);
     } else if (role == "teacher") {
       setMenus([

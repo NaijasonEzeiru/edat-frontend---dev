@@ -22,7 +22,7 @@ import TextWithLineBreaks, {
   TextWithLineBreaksRec,
 } from "@/components/others/textWithLineBreaks";
 import { Loader, MessageSquare } from "lucide-react";
-import { toTitleCase } from "@/lib/utils";
+import { latexToHTML, toTitleCase } from "@/lib/utils";
 
 type Objective = {
   objective_id: string;
@@ -434,9 +434,12 @@ const Recommedation = () => {
                           )
                           .map((question, index) => (
                             <div key={index}>
-                              <p className="mb-4 first-letter:uppercase">
-                                {question.question}
-                              </p>
+                              <p
+                                className="mb-4 first-letter:uppercase"
+                                dangerouslySetInnerHTML={{
+                                  __html: latexToHTML(question.question),
+                                }}
+                              ></p>
                               <div className="flex mb-3 items-center">
                                 <span className="mr-2">A</span>
                                 <label className="inline-flex items-center">
@@ -456,9 +459,12 @@ const Recommedation = () => {
                                       )
                                     }
                                   />
-                                  <span className="ml-2">
-                                    {question.optionA}
-                                  </span>
+                                  <span
+                                    className="ml-2"
+                                    dangerouslySetInnerHTML={{
+                                      __html: latexToHTML(question.optionA),
+                                    }}
+                                  ></span>
                                 </label>
                               </div>
                               <div className="flex mb-3 items-center">
@@ -480,9 +486,12 @@ const Recommedation = () => {
                                       )
                                     }
                                   />
-                                  <span className="ml-2">
-                                    {question.optionB}
-                                  </span>
+                                  <span
+                                    className="ml-2"
+                                    dangerouslySetInnerHTML={{
+                                      __html: latexToHTML(question.optionB),
+                                    }}
+                                  ></span>
                                 </label>
                               </div>
                               <div className="flex mb-3 items-center">
@@ -504,9 +513,12 @@ const Recommedation = () => {
                                       )
                                     }
                                   />
-                                  <span className="ml-2">
-                                    {question.optionC}
-                                  </span>
+                                  <span
+                                    className="ml-2"
+                                    dangerouslySetInnerHTML={{
+                                      __html: latexToHTML(question.optionC),
+                                    }}
+                                  ></span>
                                 </label>
                               </div>
                               <div className="flex mb-3 items-center">
@@ -528,9 +540,12 @@ const Recommedation = () => {
                                       )
                                     }
                                   />
-                                  <span className="ml-2">
-                                    {question.optionD}
-                                  </span>
+                                  <span
+                                    className="ml-2"
+                                    dangerouslySetInnerHTML={{
+                                      __html: latexToHTML(question.optionD),
+                                    }}
+                                  ></span>
                                 </label>
                               </div>
                             </div>

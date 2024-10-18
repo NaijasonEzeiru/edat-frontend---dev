@@ -91,6 +91,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { DataTable } from "./data-table";
+import QuizReport from "../Quiz/quizReport";
 
 export type licenses = {
   email: string;
@@ -320,45 +321,7 @@ export const resultColumns: ColumnDef<Results>[] = [
     id: "actions",
     header: "Action",
     enableHiding: false,
-    cell: ({ row }) => (
-      <Sheet>
-        <SheetTrigger className="whitespace-nowrap rounded bg-white p-2 border">
-          View Report
-        </SheetTrigger>
-        <SheetContent className="sm:w-[540px] overflow-auto">
-          <SheetHeader className="overflow-y-scroll  text-left">
-            <SheetTitle>Quiz Report</SheetTitle>
-            <SheetDescription>
-              {row.original.quizResults.map((val, index: number) => (
-                <Card className="mb-3" key={index}>
-                  <CardHeader>
-                    <CardTitle>Question {index + 1}</CardTitle>
-                    <CardDescription>Question: {val.question}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {val.isCorrect ? (
-                      <p className="text-green-700">
-                        You choose the right answer
-                      </p>
-                    ) : (
-                      <p className="text-destructive">
-                        You choose a wrong answer
-                      </p>
-                    )}
-                    <p>Correct option: {val.correctOption}</p>
-                    <p>Correct answer: {val.correctAnswer}</p>
-                    <p className="capitalize">
-                      Your answer: {val.selectedAnswer}
-                    </p>
-                    <p>{val.wrongOption}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
-    ),
+    cell: ({ row }) => <QuizReport quizResults={row.original.quizResults} />,
   },
 ];
 export const childResultColumns: ColumnDef<Results>[] = [
@@ -428,45 +391,7 @@ export const childResultColumns: ColumnDef<Results>[] = [
     id: "actions",
     header: "Action",
     enableHiding: false,
-    cell: ({ row }) => (
-      <Sheet>
-        <SheetTrigger className="whitespace-nowrap rounded bg-white p-2 border">
-          View Report
-        </SheetTrigger>
-        <SheetContent className="sm:w-[540px] overflow-auto">
-          <SheetHeader className="overflow-y-scroll  text-left">
-            <SheetTitle>Quiz Report</SheetTitle>
-            <SheetDescription>
-              {row.original.quizResults.map((val, index: number) => (
-                <Card className="mb-3" key={index}>
-                  <CardHeader>
-                    <CardTitle>Question {index + 1}</CardTitle>
-                    <CardDescription>Question: {val.question}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {val.isCorrect ? (
-                      <p className="text-green-700">
-                        Your child choose the right answer
-                      </p>
-                    ) : (
-                      <p className="text-destructive">
-                        Your child choose a wrong answer
-                      </p>
-                    )}
-                    <p>Correct option: {val.correctOption}</p>
-                    <p>Correct answer: {val.correctAnswer}</p>
-                    <p className="capitalize">
-                      Your child's answer: {val.selectedAnswer}
-                    </p>
-                    <p>{val.wrongOption}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
-    ),
+    cell: ({ row }) => <QuizReport quizResults={row.original.quizResults} />,
   },
 ];
 

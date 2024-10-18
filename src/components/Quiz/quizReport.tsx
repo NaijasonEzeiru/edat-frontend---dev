@@ -1,3 +1,4 @@
+import { latexToHTML } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -28,7 +29,12 @@ const QuizReport = ({ quizResults }) => {
               <Card className="mb-3" key={index}>
                 <CardHeader>
                   <CardTitle>Question {index + 1}</CardTitle>
-                  <CardDescription>Question: {val.question}</CardDescription>
+                  <div
+                    className="text-sm text-muted-foreground"
+                    dangerouslySetInnerHTML={{
+                      __html: latexToHTML(val.question),
+                    }}
+                  ></div>
                 </CardHeader>
                 <CardContent>
                   {val.isCorrect ? (

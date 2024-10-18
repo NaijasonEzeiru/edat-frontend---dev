@@ -211,9 +211,14 @@ export const CreateSubject = ({ userInfo, setShowSubjectDialog }) => {
                 <SelectContent>
                   <SelectItem value="Mathematics">Mathematics</SelectItem>
                   <SelectItem value="English">English</SelectItem>
+                  <SelectItem value="Commerce">Commerce</SelectItem>
+                  <SelectItem value="Government">Government</SelectItem>
+                  <SelectItem value="Economics">Economics</SelectItem>
+                  <SelectItem value="Social Science">Social Science</SelectItem>
+                  <SelectItem value="Geography">Geography</SelectItem>
                   <SelectItem value="Biology">Biology</SelectItem>
                   <SelectItem value="Chemistry">Chemistry</SelectItem>
-                  <SelectItem value="Physic">Physis</SelectItem>
+                  <SelectItem value="Physics">Physics</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
