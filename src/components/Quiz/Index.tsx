@@ -701,10 +701,9 @@ const Index = (props) => {
                   <p className="text-sm">
                     Correct answer: {result?.correctAnswer.toUpperCase()}
                   </p>
-                  <span className="flex gap-1">
+                  <span className="flex gap-1 text-sm">
                     <p>Correct option:</p>
                     <p
-                      className="text-sm"
                       dangerouslySetInnerHTML={{
                         __html: result?.correctOption?.replaceAll(
                           /\.*?}.*?}/g,

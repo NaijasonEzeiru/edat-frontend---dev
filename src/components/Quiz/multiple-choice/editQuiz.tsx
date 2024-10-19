@@ -27,6 +27,7 @@ import { EditQuizSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select } from "@radix-ui/react-select";
 import { Loader } from "lucide-react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -34,6 +35,8 @@ import { z } from "zod";
 const EditQuiz = ({
   question,
   index,
+  setEdittedIndexes,
+  edittedIndexes,
 }: {
   question: {
     _id: string;
@@ -46,12 +49,18 @@ const EditQuiz = ({
     // difficultyLevel: string;
   };
   index: number;
+  edittedIndexes: string[];
+  setEdittedIndexes: Dispatch<SetStateAction<string[]>>;
 }) => {
   const [updateQuiz, { isLoading }] = useUpdateQuizMutation();
   const form = useForm<z.infer<typeof EditQuizSchema>>({
     resolver: zodResolver(EditQuizSchema),
     defaultValues: { ...question },
   });
+
+  //   useEffect(() => {
+  //     // first;
+  //   }, [edittedIndexes]);
 
   async function onSubmit(body: z.infer<typeof EditQuizSchema>) {
     try {
@@ -62,7 +71,8 @@ const EditQuiz = ({
           description: response?.error?.data?.message,
         });
       } else {
-        toast(response.data.message);
+        setEdittedIndexes((prev) => [...prev, body._id]);
+        toast.success("Quiz editted successfully");
       }
     } catch (error) {
       toast.error("Registration failed", {
@@ -74,7 +84,14 @@ const EditQuiz = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={`mt-4 ${
+          edittedIndexes.indexOf(question._id) !== -1
+            ? "bg-red-700 border-8 border-green-700"
+            : ""
+        }`}
+      >
         <Card className="" key={question._id}>
           <CardHeader>
             <CardTitle>Question {index + 1}</CardTitle>

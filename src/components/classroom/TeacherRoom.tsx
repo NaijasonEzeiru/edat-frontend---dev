@@ -53,7 +53,7 @@ const TeacherRoom = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openEditQuizDialog, setOpenEditQuizDialog] = useState(false);
   const [getAllQuiz, { data }] = useLazyGetAllQuizByObjCodeQuery();
-  const dialogRef = useRef(null);
+  const [edittedIndexes, setEdittedIndexes] = useState<string[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState("");
   const [search, setSearch] = useState("");
   const [filteredObjectives, setFilteredObjectives] = useState([]);
@@ -61,6 +61,7 @@ const TeacherRoom = () => {
   const [followUp, setFollowUp] = useState("");
 
   console.log({ allObjectives, data });
+  console.log({ edittedIndexes });
   // console.log({ data: data?.filter((val) => val.country == "United Kingdom") });
 
   const handleSearchChange = (e) => {
@@ -316,9 +317,18 @@ const TeacherRoom = () => {
             </DialogDescription> */}
           </DialogHeader>
           <div className="overflow-y-auto">
-            {data?.map((question, index) => (
-              <EditQuiz index={index} question={question} />
-            ))}
+            {data?.map((question, index) => {
+              if (edittedIndexes?.indexOf(question._id) == -1) {
+                return (
+                  <EditQuiz
+                    index={index}
+                    question={question}
+                    setEdittedIndexes={setEdittedIndexes}
+                    edittedIndexes={edittedIndexes}
+                  />
+                );
+              } else return <></>;
+            })}
             {/* {data
               ?.filter((val) => val?.country)
               .map((question, index) => (
