@@ -60,7 +60,7 @@ const TeacherRoom = () => {
   const [selectedObjective, setSelectedObjective] = useState(null);
   const [followUp, setFollowUp] = useState("");
 
-  console.log({ allObjectives, data });
+  console.log("all i need here", { allObjectives, data });
   console.log({ edittedIndexes });
   // console.log({ data: data?.filter((val) => val.country == "United Kingdom") });
 
@@ -81,6 +81,7 @@ const TeacherRoom = () => {
         );
       });
       setFilteredObjectives(filtered);
+      console.log("this is fileter", filtered);
     }
   };
 
@@ -112,10 +113,14 @@ const TeacherRoom = () => {
     console.log(response);
     console.log("heere", payload);
     if (response.data.status === true) {
-      getAllQuiz({
+      const getAllQ = await getAllQuiz({
         lo: selectedObjective?.objective,
         country: userInfo?.country,
+        objCode: selectedObjective?.objCode,
       });
+
+      console.log("data here", getAllQ);
+
       toast(response.data.message);
       setOpenQuizDialog(false);
       setOpenEditQuizDialog(true);
@@ -165,7 +170,7 @@ const TeacherRoom = () => {
                       className="w-full"
                       placeholder="Search"
                     />
-                    {filteredObjectives.length > 0 && (
+                    {filteredObjectives?.length > 0 && (
                       <ul className="absolute left-0 top-full bg-white border border-gray-300 w-full  overflow-y-auto">
                         {filteredObjectives.map((objective, index) => (
                           <li
@@ -329,11 +334,6 @@ const TeacherRoom = () => {
                 );
               } else return <></>;
             })}
-            {/* {data
-              ?.filter((val) => val?.country)
-              .map((question, index) => (
-                <EditQuiz index={index} question={question} />
-              ))} */}
           </div>
         </DialogContent>
       </Dialog>

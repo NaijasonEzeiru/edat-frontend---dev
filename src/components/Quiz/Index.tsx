@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import katex from "katex";
 import {
   useAnalyzeResultMutation,
   useQuizRandomSelectMutation,
@@ -28,6 +27,7 @@ import {
 } from "../ui/breadcrumb";
 import { Link } from "react-router-dom";
 import TextWithLineBreaks from "../others/textWithLineBreaks";
+import { latexToHTML } from "@/lib/utils";
 
 const Index = (props) => {
   const [currentQuiz, setCurrentQuiz] = useState(null);
@@ -271,11 +271,7 @@ const Index = (props) => {
           <h4
             className="rounded bg-[#EBF0FC] px-4 py-5 font-medium first-letter:uppercase"
             dangerouslySetInnerHTML={{
-              __html: currentQuiz?.question?.replaceAll(
-                /\\.*?\}.*?\}/g,
-                //
-                (match) => katex.renderToString(match)
-              ),
+              __html: latexToHTML(currentQuiz?.question),
             }}
           ></h4>
         )}
@@ -298,11 +294,7 @@ const Index = (props) => {
               </span>{" "}
               <span
                 dangerouslySetInnerHTML={{
-                  __html: currentQuiz?.optionA?.replaceAll(
-                    /\\.*?\}.*?\}/g,
-                    //
-                    (match) => katex.renderToString(match)
-                  ),
+                  __html: latexToHTML(currentQuiz?.optionA),
                 }}
               ></span>
             </label>
@@ -323,11 +315,7 @@ const Index = (props) => {
               </span>{" "}
               <span
                 dangerouslySetInnerHTML={{
-                  __html: currentQuiz?.optionB?.replaceAll(
-                    /\\.*?\}.*?\}/g,
-                    //
-                    (match) => katex.renderToString(match)
-                  ),
+                  __html: latexToHTML(currentQuiz?.optionB),
                 }}
               ></span>
             </label>
@@ -348,11 +336,7 @@ const Index = (props) => {
               </span>{" "}
               <span
                 dangerouslySetInnerHTML={{
-                  __html: currentQuiz?.optionC?.replaceAll(
-                    /\\.*?\}.*?\}/g,
-                    //
-                    (match) => katex.renderToString(match)
-                  ),
+                  __html: latexToHTML(currentQuiz?.optionC),
                 }}
               ></span>
             </label>
@@ -373,11 +357,7 @@ const Index = (props) => {
               </span>{" "}
               <span
                 dangerouslySetInnerHTML={{
-                  __html: currentQuiz?.optionD?.replaceAll(
-                    /\\.*?\}.*?\}/g,
-                    //
-                    (match) => katex.renderToString(match)
-                  ),
+                  __html: latexToHTML(currentQuiz?.optionD),
                 }}
               ></span>
             </label>
@@ -688,12 +668,15 @@ const Index = (props) => {
                   <p
                     className="font-semibold text-[18px]"
                     dangerouslySetInnerHTML={{
-                      __html: result?.question?.replaceAll(
-                        /\\.*?\}.*?\}/g,
-                        //
-                        (match) => katex.renderToString(match)
-                      ),
+                      __html: latexToHTML(result?.question),
                     }}
+                    // dangerouslySetInnerHTML={{
+                    //   __html: result?.question?.replaceAll(
+                    //     /\\.*?\}.*?\}/g,
+                    //     //
+                    //     (match) => katex.renderToString(match)
+                    //   ),
+                    // }}
                   ></p>
                   <p className="text-sm">
                     Your answer: {result?.selectedAnswer?.toUpperCase()}
@@ -705,12 +688,15 @@ const Index = (props) => {
                     <p>Correct option:</p>
                     <p
                       dangerouslySetInnerHTML={{
-                        __html: result?.correctOption?.replaceAll(
-                          /\.*?}.*?}/g,
-                          //
-                          (match) => katex.renderToString(match)
-                        ),
+                        __html: latexToHTML(result?.correctOption),
                       }}
+                      // dangerouslySetInnerHTML={{
+                      //   __html: result?.correctOption?.replaceAll(
+                      //     /\.*?}.*?}/g,
+                      //     //
+                      //     (match) => katex.renderToString(match)
+                      //   ),
+                      // }}
                     ></p>
                   </span>
                 </div>
